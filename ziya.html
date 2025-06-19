@@ -1,0 +1,661 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ <meta charset="UTF-8">
+ <title>Zia Ali's Cyberpunk Portfolio</title>
+ <style>
+ @import url('https://fonts.googleapis.com/css2?family=VT323&family=Rock+Salt&family=Share+Tech+Mono&display=swap');
+ 
+ :root {
+ --neon-pink: #ff279e;
+ --neon-blue: #41afff;
+ --neon-purple: #8010c4;
+ --neon-cyan: #0ff;
+ --matrix-green: #0f0;
+ --dark-bg: #0a0a12;
+ }
+ 
+ html, body {
+ margin: 0;
+ padding: 0;
+ height: 100%;
+ font-family: 'Share Tech Mono', monospace;
+ scroll-snap-type: y mandatory;
+ overflow-y: auto;
+ background-color: #2E2247;
+ background-image:
+ linear-gradient(to right, #8010C4 1px, transparent 1px),
+ linear-gradient(to bottom, #8010C4 1px, transparent 1px);
+ background-size: 60px 60px;
+ color: #fff;
+ scroll-behavior: smooth;
+ }
+ 
+ body::before {
+ content: "";
+ position: fixed;
+ top: 0; left: 0;
+ width: 100%; height: 100%;
+ background: radial-gradient(#ff69b4 1px, transparent 1px);
+ background-size: 50px 50px;
+ animation: sparkleMove 60s linear infinite;
+ opacity: 0.2;
+ z-index: -1;
+ }
+ 
+ @keyframes sparkleMove {
+ from { transform: translate(0, 0); }
+ to { transform: translate(-100px, -100px); }
+ }
+ 
+ body::after {
+ content: "";
+ position: fixed;
+ top: 0;
+ left: 0;
+ width: 100%;
+ height: 100%;
+ background: linear-gradient(
+ rgba(18, 16, 16, 0) 50%, 
+ rgba(0, 0, 0, 0.25) 50%
+ );
+ background-size: 100% 4px;
+ pointer-events: none;
+ z-index: 0;
+ }
+ 
+ .profile-container {
+ position: relative;
+ z-index: 10;
+ display: inline-block;
+ }
+
+ section {
+ scroll-snap-align: start;
+ min-height: 100vh;
+ height: auto;
+ padding: 60px 20px;
+ box-sizing: border-box;
+ display: flex;
+ flex-direction: column;
+ justify-content: center;
+ align-items: center;
+ color: #ffEC40;
+ text-align: center;
+ opacity: 0;
+ transform: translateY(20px);
+ transition: opacity 0.8s ease, transform 0.8s ease;
+ position: relative;
+ }
+ 
+ section.visible {
+ opacity: 1;
+ transform: translateY(0);
+ }
+ 
+ .scroll-container {
+ max-height: calc(100vh - 200px);
+ overflow-y: auto;
+ width: 100%;
+ padding-right: 5px;
+ scrollbar-width: thin;
+ scrollbar-color: var(--neon-pink) rgba(46, 34, 71, 0.5);
+ }
+
+ .scroll-container::-webkit-scrollbar {
+ width: 5px;
+ }
+ .scroll-container::-webkit-scrollbar-track {
+ background: rgba(46, 34, 71, 0.5);
+ }
+ .scroll-container::-webkit-scrollbar-thumb {
+ background: var(--neon-pink);
+ border-radius: 3px;
+ }
+ 
+ h1, h2 {
+ color: #ff279E;
+ margin-bottom: 20px;
+ font-family: 'VT323', monospace;
+ word-wrap: break-word;
+ }
+ 
+ h1 {
+ font-size: 2.5rem;
+ }
+ 
+ h2 {
+ font-size: 2rem;
+ }
+ 
+ h3 {
+ font-size: 1.5rem;
+ color: #ffEC40;
+ margin-bottom: 15px;
+ }
+ 
+ p, a, li {
+ font-size: 1rem;
+ line-height: 1.5;
+ color: #41AFFE;
+ max-width: 800px;
+ text-align: left;
+ margin: 0.5rem 0;
+ }
+ 
+ ul {
+ text-align: left;
+ width: 100%;
+ max-width: 800px;
+ padding-left: 1.5rem;
+ margin: 0.5rem 0;
+ }
+ 
+ a {
+ text-decoration: none;
+ font-weight: bold;
+ }
+ 
+ a:hover {
+ color: #a10955;
+ text-decoration: underline;
+ }
+ 
+ .profile-img {
+ position: relative;
+ z-index: 1;
+ width: 180px;
+ height: 180px;
+ border-radius: 50%;
+ object-fit: cover;
+ border: 4px solid #ffEC40;
+ box-shadow: 0 0 25px #8010C4;
+ margin-bottom: 20px;
+ transition: all 0.3s ease;
+ }
+ 
+ .profile-img:hover {
+ transform: scale(1.05);
+ box-shadow: 0 0 40px #a10955;
+ }
+ 
+ /* Cyberpunk cards */
+ .project, .education, .experience, .skills-container, .volunteering, .awards {
+ background: rgba(46, 34, 71, 0.7);
+ backdrop-filter: blur(10px);
+ margin: 15px 0;
+ border-left: 3px solid #ff279e;
+ padding: 20px;
+ max-width: 800px;
+ width: 90%;
+ border-radius: 5px;
+ box-shadow: 
+ 0 0 15px rgba(255, 39, 158, 0.3),
+ inset 0 0 10px rgba(255,255,255,0.1);
+ transition: all 0.3s ease;
+ }
+ 
+ .project:hover, .experience:hover {
+ transform: translateY(-5px);
+ box-shadow: 
+ 0 0 25px rgba(255, 39, 158, 0.5),
+ 0 0 35px rgba(128, 16, 196, 0.5);
+ }
+ 
+ .menu-icon {
+ position: fixed;
+ top: 20px;
+ right: 20px;
+ z-index: 1000;
+ width: auto;
+ min-width: 80px;
+ height: 30px;
+ cursor: pointer;
+ text-align: center;
+ overflow: hidden;
+ padding: 0;
+ }
+ 
+ .menu-text {
+ position: relative;
+ display: block;
+ height: 30px;
+ line-height: 30px;
+ width: 100%;
+ color: transparent;
+ }
+ 
+ .menu-text::before,
+ .menu-text::after {
+ position: absolute;
+ top: 0;
+ left: 0;
+ width: 100%;
+ height: 100%;
+ font-family: 'Rock Salt', cursive;
+ font-size: 10px;
+ transition: transform 0.5s ease, opacity 0.5s ease;
+ line-height: 30px;
+ background: transparent;
+ }
+ 
+ .menu-text::before {
+ content: "MENU";
+ color: #d90268;
+ transform: translateY(0);
+ opacity: 1;
+ }
+ 
+ .menu-text::after {
+ content: "OPEN";
+ color: #ffd400;
+ transform: translateY(100%);
+ opacity: 0;
+ }
+ 
+ .menu-icon:hover .menu-text::before {
+ transform: translateY(-100%);
+ opacity: 0;
+ }
+ 
+ .menu-icon:hover .menu-text::after {
+ transform: translateY(0);
+ opacity: 1;
+ }
+ 
+ .menu-items {
+ display: none;
+ position: fixed;
+ top: 60px;
+ right: 20px;
+ background-color: rgba(46, 34, 71, 0.95);
+ background-image: 
+ linear-gradient(to right, #8010C4 1px, transparent 1px),
+ linear-gradient(to bottom, #8010C4 1px, transparent 1px);
+ border: 2px solid #ffEC40;
+ border-radius: 20px;
+ padding: 10px;
+ flex-direction: column;
+ min-width: 180px;
+ z-index: 1000;
+ box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+ opacity: 0;
+ transform: scale(0.8);
+ pointer-events: none;
+ transition: opacity 0.3s ease, transform 0.3s ease;
+ }
+ 
+ .menu-items.active {
+ display: flex;
+ opacity: 1;
+ transform: scale(1);
+ pointer-events: auto;
+ }
+ 
+ .menu-item {
+ font-family: 'VT323', monospace;
+ font-size: 15px;
+ color: #FF69B4;
+ cursor: pointer;
+ transition: all 0.3s ease;
+ padding: 8px 12px;
+ white-space: nowrap;
+ text-align: center;
+ }
+ 
+ .menu-item:hover {
+ color: #FFEC40;
+ text-shadow: 0 0 8px #FFEC40;
+ transform: translateX(5px);
+ background-color: rgba(128, 16, 196, 0.2);
+ }
+ 
+ .skill-icons {
+ display: flex;
+ flex-wrap: wrap;
+ gap: 15px;
+ justify-content: center;
+ }
+ 
+ .skill-icons img {
+ width: 50px;
+ height: 50px;
+ filter: drop-shadow(0 0 2px #ff69b4);
+ transition: all 0.3s ease;
+ }
+ 
+ .skill-icons img:hover {
+ transform: scale(1.2);
+ filter: drop-shadow(0 0 8px #ff279e);
+ }
+ 
+ .glitch {
+ position: relative;
+ }
+ 
+ .glitch:hover {
+ animation: glitch-effect 0.5s linear infinite;
+ }
+ 
+ @keyframes glitch-effect {
+ 0% { transform: translate(0); }
+ 20% { transform: translate(-2px, 2px); }
+ 40% { transform: translate(-2px, -2px); }
+ 60% { transform: translate(2px, 2px); }
+ 80% { transform: translate(2px, -2px); }
+ 100% { transform: translate(0); }
+ }
+ 
+ .cursor-trail {
+ position: fixed;
+ width: 6px;
+ height: 6px;
+ background: #ff69b4;
+ border-radius: 50%;
+ pointer-events: none;
+ z-index: 9999;
+ box-shadow: 0 0 10px #ff279e;
+ }
+ 
+ /* ===== Tablet & Mobile Styles ===== */
+ @media (max-width: 768px) {
+ html, body {
+ scroll-snap-type: y proximity;
+ overflow-x: hidden;
+ }
+ 
+ section {
+ padding: 40px 15px;
+ height: auto;
+ min-height: 100vh;
+ justify-content: flex-start;
+ padding-top: 80px;
+ }
+
+ h1 { 
+ font-size: 2rem; 
+ margin-top: 20px;
+ }
+ 
+ h2 { font-size: 1.8rem; }
+ h3 { font-size: 1.4rem; }
+ 
+ p, a, li { 
+ font-size: 0.9rem;
+ max-width: 100%; 
+ }
+
+ .profile-img {
+ width: 120px;
+ height: 120px;
+ margin-bottom: 20px;
+ }
+
+ .project, .education, .experience {
+ padding: 15px;
+ margin: 15px 0;
+ width: 95%;
+ }
+
+ .menu-icon {
+ top: 15px;
+ right: 15px;
+ min-width: 60px;
+ height: 25px;
+ }
+ 
+ .menu-items {
+ top: 50px;
+ right: 15px;
+ min-width: 140px;
+ }
+ 
+ ul {
+ padding-left: 20px;
+ max-width: 100%;
+ }
+ 
+ .skill-icons {
+ gap: 10px;
+ }
+ 
+ .skill-icons img {
+ width: 40px;
+ height: 40px;
+ }
+ 
+ .scroll-container {
+ max-height: calc(100vh - 150px);
+ width: 100%;
+ }
+ }
+
+ /* ===== Small Mobile Devices ===== */
+ @media (max-width: 480px) {
+ h1 { font-size: 1.8rem; }
+ h2 { font-size: 1.5rem; }
+ h3 { font-size: 1.2rem; }
+ 
+ .profile-img {
+ width: 100px;
+ height: 100px;
+ }
+ 
+ section {
+ padding: 20px 10px;
+ padding-top: 70px;
+ }
+ 
+ .menu-icon {
+ min-width: 50px;
+ }
+ 
+ .menu-item {
+ font-size: 0.9rem;
+ padding: 6px 10px;
+ }
+ 
+ .project, .education, .experience {
+ padding: 12px;
+ }
+ 
+ p, a, li {
+ font-size: 0.85rem;
+ }
+ }
+ </style>
+</head>
+<body>
+ <div class="menu-icon" onclick="toggleMenu()">
+ <span class="menu-text"></span>
+ </div>
+ 
+ <div class="menu-items" id="menuItems">
+ <div class="menu-item" onclick="scrollToSection('home')">Home</div>
+ <div class="menu-item" onclick="scrollToSection('education')">Education</div>
+ <div class="menu-item" onclick="scrollToSection('projects')">Projects</div>
+ <div class="menu-item" onclick="scrollToSection('experience')">Experience</div>
+ <div class="menu-item" onclick="scrollToSection('skills')">Skills</div>
+ <div class="menu-item" onclick="scrollToSection('awards')">Awards</div>
+ <div class="menu-item" onclick="scrollToSection('contact')">Contact</div>
+ </div>
+ 
+ <section id="home">
+ <h1>Hi, I am Zia & I built stuff.</h1>
+ <div class="profile-container">
+ <img src="assets/logo1.JPG" class="profile-img" alt="Zia Ali">
+ </div>
+ <p>
+  I kicked things off at FAST Karachi, and now I’m majoring in Computer Science at the University of Manitoba — casually stacking minors in Math, Stats, and Econ along the way (because apparently I enjoy stress).<br><br>
+  I like building things that actually work (and sometimes break, but we move). From full stack apps to AI/ML, crypto, and blockchain — I’m into tech that’s shaping what’s next, not just what’s hyped right now.<br><br>
+  Sometimes you’ll find me dropping videos on YouTube when the mood hits.<br><br>
+  I overthink, overbuild, and somehow still enjoy the chaos. Still learning. Still shipping. Still figuring it out — but making it look good while I do.<br><br>
+</p> </section>
+ 
+ <section id="education">
+ <h2>Education</h2>
+ <div class="education">
+ <h3>University of Manitoba</h3>
+ <p>Jan 2024 – Present | Winnipeg, Canada</p>
+ <p>B.C.Sc. Computer Science, Statistics & Mathematics Minor</p>
+ <p>• Dean's List</p>
+ </div>
+ 
+ <div class="education">
+ <h3>FAST University Pakistan</h3>
+ <p>Aug 2022 – Dec 2023</p>
+ <p>B.C.Sc. Computer Science</p>
+ </div>
+ </section>
+ 
+ <section id="projects">
+ <h2>Projects</h2>
+ <div class="project glitch">
+ <h3>ChatWithCat Simulation | Java, NLP, OpenApache, Java Swing</h3>
+ <ul>
+ <li>Developed interactive game where users communicate with virtual cat using NLP</li>
+ <li>The chatbot triggers in-game actions like movement, sounds, and animations</li>
+ </ul>
+ </div>
+ 
+ <div class="project glitch">
+ <h3>COVID-19 Data Visualization | Python (Flask, Folium), React, Leaflet.js</h3>
+ <ul>
+ <li>Developed web-based dashboard to visualize COVID-19 data with dynamic maps</li>
+ <li>Integrated APIs to show real-time statistics and geospatial data</li>
+ </ul>
+ </div>
+
+ <div class="project glitch">
+ <h3>Checkers Quest | C++, SFML</h3>
+ <ul>
+ <li>Created a turn-based checkers game with optimized gameplay mechanics</li>
+ <li>Implemented AI logic for an intelligent opponent to challenge players</li>
+ </ul>
+ </div>
+ </section>
+ 
+ <section id="experience">
+ <h2>Leadership & Volunteering Experience</h2>
+ <div class="experience">
+ <ul>
+ <li>Project Coordinator, UM Programming Project Club</li>
+ <li>Instructor, UMWICS: Led web development workshop</li>
+ <li>Religious Educator, Ismaili Jamatkhana</li>
+ <li>Hackathon Organizer, DECS Club, FAST University</li>
+ <li>President, Social Service Club, FAST University</li>
+ <li>Member, World Association of Girl Guides and Scouts (2008–2020)</li>
+ </ul>
+ </div>
+ </section>
+
+ <section id="skills">
+ <h2>Technical Skills</h2>
+ <div class="project">
+ <h3>Languages</h3>
+ <p>C++, Java, JavaScript, C, R, Python, HTML, CSS</p>
+ 
+ <h3>Frameworks/Libraries</h3>
+ <p>React.js, Angular.js, Node.js, Matplotlib, Next.js, Java Swing, NLP Libraries, TailWind CSS, Phaser</p>
+ 
+ <h3>Tools</h3>
+ <p>Git, GitHub, Markdown, RStudio, VS Code, Figma</p>
+ 
+ <h3>Interests</h3>
+ <p>Cryptography, Blockchain, AI & Machine Learning, Full Stack Development, Game Development</p>
+ </div>
+ </section>
+
+ <section id="awards">
+ <h2>Awards & Honors</h2>
+ <div class="awards">
+ <ul>
+ <li>Habib High Achievers Meritorious Award</li>
+ <li>AKHSS Award for High Achievers</li>
+ <li>Sidhpur Foundation Award</li>
+ </ul>
+ </div>
+ </section>
+
+ <section id="contact">
+ <h2>Contact Info</h2>
+ <div class="project">
+ <p>Winnipeg, Canada</p>
+ <p>Phone: <a href="tel:204-493-0566">204-493-0566</a></p>
+ <p>Email: <a href="mailto:aliz6@myumanitoba.ca">aliz6@myumanitoba.ca</a></p>
+ <p><a href="https://www.linkedin.com/in/zia-ali-a4b106248/" target="_blank">LinkedIn</a> | <a href="https://github.com/ziyyaa1" target="_blank">GitHub</a></p>
+ </div>
+ </section>
+
+ <script>
+ // Menu toggle function
+ function toggleMenu() {
+ const menu = document.getElementById('menuItems');
+ menu.classList.toggle('active');
+ menu.style.display = menu.classList.contains('active') ? 'flex' : 'none';
+ }
+ 
+ // Scroll to section function - GUARANTEED WORKING VERSION
+ function scrollToSection(sectionId) {
+ // Immediately hide menu without animation
+ const menu = document.getElementById('menuItems');
+ menu.classList.remove('active');
+ menu.style.display = 'none';
+ 
+ // Disable ALL scroll-snap behavior
+ document.documentElement.style.scrollSnapType = 'none';
+ document.body.style.scrollSnapType = 'none';
+ 
+ // Get target section
+ const section = document.getElementById(sectionId);
+ if (section) {
+      section.scrollIntoView({ behavior: 'smooth' });
+    }
+ if (!section) return;
+ 
+ // Calculate position accounting for header
+ const headerHeight = 60;
+ const sectionPosition = section.offsetTop - headerHeight;
+ 
+ // Use requestAnimationFrame for reliable scrolling
+ const startTime = performance.now();
+ const duration = 800; // milliseconds
+ 
+ function scrollStep(timestamp) {
+ const elapsed = timestamp - startTime;
+ const progress = Math.min(elapsed / duration, 1);
+ 
+ window.scrollTo(0, window.pageYOffset + (sectionPosition - window.pageYOffset) * progress);
+ 
+ if (progress < 1) {
+ window.requestAnimationFrame(scrollStep);
+ }
+ }
+ 
+ window.requestAnimationFrame(scrollStep);
+ }
+ 
+ // Intersection observer for scroll animations
+ const sections = document.querySelectorAll('section');
+ const observer = new IntersectionObserver((entries) => {
+ entries.forEach(entry => {
+ if (entry.isIntersecting) {
+ entry.target.classList.add('visible');
+ }
+ });
+ }, { threshold: 0.1 });
+ 
+ sections.forEach(section => observer.observe(section));
+ 
+ // Initialize first section as visible
+ window.addEventListener('DOMContentLoaded', () => {
+ if (sections.length > 0) {
+ sections[0].classList.add('visible');
+ }
+ });
+ </script>
+ 
+</body>
+</html>
+
