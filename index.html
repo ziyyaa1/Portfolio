@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>Zia's Game Portfolio</title>
+
+    <link rel="icon" type="image/png" href="assets/logo.jpg" />
+    <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Rock+Salt&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+
+    <script type="text/javascript" src="phaser.min.js"></script>
+    <script type="text/javascript" src="game.js"></script>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <!-- SEO Meta Tags -->
+  <meta name="description" content="Zia Ali's interactive game portfolio. Play, explore, and experience original Phaser games by Zia Mansoor Ali." />
+  <meta name="keywords" content="Zia, Ziya, Zia Ali, Ziya Ali, Zia Mansoor Ali, game portfolio, Zia portfolio, Ziya game developer, Phaser games, indie game developer" />
+  <meta name="author" content="Zia Mansoor Ali" />
+  <meta name="robots" content="index, follow" />
+
+  <!-- Open Graph for better social media link previews -->
+  <meta property="og:title" content="Zia's Game Portfolio" />
+  <meta property="og:description" content="Play creative indie games made by Zia Ali using Phaser.js. See what Zia Mansoor Ali is building!" />
+  <meta property="og:image" content="assets/logo.jpg" />
+  <meta property="og:url" content="https://ziya.dev" /> <!-- Replace with your actual domain -->
+  <meta property="og:type" content="website" />
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Zia's Game Portfolio" />
+  <meta name="twitter:description" content="Explore creative web games made by Ziya Ali using Phaser.js" />
+</head>
+
+<body>
+
+        <div id="game-container">
+        <canvas id="game-canvas"></canvas>
+        
+        <!-- Title Screen -->
+        <div id="title-screen" class="game-screen" style="display: flex;">
+            <h2 class="game-title">
+                HI, I AM ZIA
+                <span>HI, I AM ZIA</span>
+                <span>HI, I AM ZIA</span>
+                <span>Welcome to my portfolio game!</span>
+              </h2>
+              <div class="game-press-enter" onclick="startGame()">
+                <span class="wave-text">
+                  <span style="--i:0">P</span><span style="--i:1">R</span><span style="--i:2">E</span><span style="--i:3">S</span><span style="--i:4">S</span><span style="--i:5">&nbsp;</span>
+                  <span style="--i:6">E</span><span style="--i:7">N</span><span style="--i:8">T</span><span style="--i:9">E</span><span style="--i:10">R</span><span style="--i:11">&nbsp;</span>
+                  <span style="--i:12">T</span><span style="--i:13">O</span><span style="--i:14">&nbsp;</span>
+                  <span style="--i:15">E</span><span style="--i:16">X</span><span style="--i:17">P</span><span style="--i:18">L</span><span style="--i:19">O</span><span style="--i:20">R</span><span style="--i:21">E</span>
+                </span>
+              </div>       
+        </div>
+        
+         <!-- Instruction Screen -->
+    <div class="game-screen" id="instructions-screen" style="display: none;">
+      <h2 class="subheader" data-text="Welcome, Player One. Are you ready?">
+        Welcome, Player One. Are you ready?
+      </h2>
+      
+        <div class="instructions-options">
+            <!-- Option 1: Start Game -->
+            <div class="instructions-option" onclick="startGameplay()">
+              <span class="wave-text">
+                <span style="--i:0">▶</span><span style="--i:1"> </span>
+                <span style="--i:2">P</span><span style="--i:3">R</span><span style="--i:4">E</span><span style="--i:5">S</span><span style="--i:6">S</span><span style="--i:7">&nbsp;</span>
+                <span style="--i:8">E</span><span style="--i:9">N</span><span style="--i:10">T</span><span style="--i:11">E</span><span style="--i:12">R</span><span style="--i:13">&nbsp;</span>
+                <span style="--i:14">T</span><span style="--i:15">O</span><span style="--i:16">&nbsp;</span>
+                <span style="--i:17">B</span><span style="--i:18">E</span><span style="--i:19">G</span><span style="--i:20">I</span><span style="--i:21">N</span>
+              </span>
+            </div>
+        
+            <!-- Option 2: Skip to Portfolio -->
+            <div class="instructions-option" onclick="location.href='http://127.0.0.1:5500/ziya.html'">
+              <span class="wave-text">
+                <span style="--i:0">▶</span><span style="--i:1"> </span>
+                <span style="--i:2">S</span><span style="--i:3">K</span><span style="--i:4">I</span><span style="--i:5">P</span><span style="--i:6">&nbsp;</span>
+                <span style="--i:7">T</span><span style="--i:8">O</span><span style="--i:9">&nbsp;</span>
+                <span style="--i:10">P</span><span style="--i:11">O</span><span style="--i:12">R</span><span style="--i:13">T</span><span style="--i:14">F</span><span style="--i:15">O</span><span style="--i:16">L</span><span style="--i:17">I</span><span style="--i:18">O</span>
+              </span>
+            </div>
+        
+            <!-- Option 3: How to Play -->
+            <div class="instructions-option" onclick="openPopup('instructions-popup')">
+              <span class="wave-text">
+                <span style="--i:0">▶</span><span style="--i:1"> </span>
+                <span style="--i:2">H</span><span style="--i:3">O</span><span style="--i:4">W</span><span style="--i:5">&nbsp;</span>
+                <span style="--i:6">T</span><span style="--i:7">O</span><span style="--i:8">&nbsp;</span>
+                <span style="--i:9">P</span><span style="--i:10">L</span><span style="--i:11">A</span><span style="--i:12">Y</span><span style="--i:13">?</span>
+              </span>
+            </div>
+          </div>
+        </div>
+    </div>
+        
+        <!-- Game Over Screen -->
+    <div id="game-over-screen" class="popup" style="display: none;">
+        <div class="popup-header">THANK YOU</div>
+        <div class="popup-content">
+          <div class="game-instructions">
+            <p> Portfolio crafted with passion by <strong>Zia Ali</strong></p>
+            <p> Art assets  by the amazing <strong>Asimuz</strong></p>
+            <p> Thanks for playing — hope it made your day a little cooler!</p>
+        </div>
+        
+        </div>
+        <div class="game-press-enter" id="game-over-button">
+            <span class="wave-text">
+            <span style="--i:0">P</span><span style="--i:1">R</span><span style="--i:2">E</span><span style="--i:3">S</span><span style="--i:4">S</span><span style="--i:5">&nbsp;</span>
+            <span style="--i:6">E</span><span style="--i:7">N</span><span style="--i:8">T</span><span style="--i:9">E</span><span style="--i:10">R</span><span style="--i:11">&nbsp;</span>
+            <span style="--i:12">T</span><span style="--i:13">O</span><span style="--i:14">&nbsp;</span>
+            <span style="--i:15">R</span><span style="--i:16">E</span><span style="--i:17">P</span><span style="--i:18">L</span><span style="--i:19">A</span><span style="--i:20">Y</span>
+            </span>
+        </div>
+    </div>
+
+    <!-- NavBar -->
+    <div class="navbar">
+            <div class="menu-icon" onclick="toggleMenu()">
+                <span class="menu-text"></span>  <!-- Removed data-text attribute -->
+            </div>
+        <div class="menu-items" id="menuItems">
+            <div class="menu-item" onclick="openPopup('aboutPopup'); toggleMenu()">About Me</div>
+            <div class="menu-item" onclick="openPopup('educationPopup'); toggleMenu()">Education</div>
+            <div class="menu-item" onclick="openPopup('projectsPopup'); toggleMenu()">Projects</div>
+            <div class="menu-item" onclick="openPopup('experiencePopup'); toggleMenu()">Experience</div>
+            <div class="menu-item" onclick="openPopup('skillsPopup'); toggleMenu()">Skills</div>
+            <div class="menu-item" onclick="openPopup('contactPopup'); toggleMenu()">Contact</div>
+        </div>
+    </div>
+    
+    <!-- Instructions Popup -->
+    <div class="popup" id="instructions-popup">
+        <span class="close-btn" onclick="closePopup('instructions-popup')">×</span>            
+        <div class="popup-header">HOW TO PLAY?</div>
+        <div class="popup-content">
+            <div class="game-instructions">
+                <p>← → Arrow Keys to Move</p>
+                <p>X to JUMP</p>
+                <p>C to SHOOT</p>
+                <p>↓ to CROUCH</p>
+                <p>Reach the end to win!</p>
+            </div>
+        </div> 
+    </div>
+
+    <!-- About Me Popup -->
+    <div class="popup" id="aboutPopup">
+        <span class="close-btn" onclick="closePopup('aboutPopup')">×</span>
+        <div class="popup-header">About Me</div>
+        <div class="popup-content">
+          <img src="assets/logo1.JPG" class="profile-img" alt="Ziya Logo" />
+          <div class="intro-text">Hi, I am Ziya & I build stuff</div>
+          <p>
+            I kicked things off at FAST Karachi, and now I’m majoring in Computer Science at the University of Manitoba — casually stacking minors in Math, Stats, and Econ along the way (because apparently I enjoy stress).<br><br>
+            I like building things that actually work (and sometimes break, but we move). From full stack apps to AI/ML, crypto, and blockchain — I’m into tech that’s shaping what’s next, not just what’s hyped right now.<br><br>
+            Sometimes you’ll find me dropping videos on YouTube when the mood hits.<br><br>
+            I overthink, overbuild, and somehow still enjoy the chaos. Still learning. Still shipping. Still figuring it out — but making it look good while I do.<br><br>
+          </p>
+        </div>
+    </div>
+    
+    <!-- Education Popup -->
+    <div class="popup" id="educationPopup">
+      <span class="close-btn" onclick="closePopup('educationPopup')">×</span>
+      <div class="popup-header">Education</div>
+      <div class="popup-content">
+        <div class="education-item">
+          <h3 class="education-title ">University of Manitoba Winnipeg, Canada</h3>
+          <div class="education-date">
+            <span class="neon-pink">Jan 2024 – Present</span>
+            <span>Winnipeg, Manitoba, Canada</span>
+          </div>
+          <div class="education-details">
+            <p>Computer Science, B.C.Sc., Majors, Statistics & Mathematics Minor</p>
+            <p class="education-details ">• Dean's List</p>
+          </div>
+        </div>
+    
+        <div class="education-item">
+          <h3 class="education-title ">FAST University Pakistan</h3>
+          <div class="education-date">
+            <span class="education-date">Aug 2022 – Dec 2023</span>
+            <span>Karachi, Pakistan</span>
+          </div>
+          <div class="education-details">
+            <p>Computer Science, B.C.Sc., Majors</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+
+    <!-- Projects Popup -->
+<div class="popup" id="projectsPopup">
+  <span class="close-btn" onclick="closePopup('projectsPopup')">×</span>
+  <div class="popup-header">Projects</div>
+  <div class="popup-content">
+    <div class="project">
+      <div class="project-title">ChatWithCat Simulation | Java, NLP, OpenApache, Java Swing</div>
+      <div class="project-date">2023</div>
+      <p>An interactive game where users communicate with a virtual cat using NLP.</p>
+      <div class="project-details">
+        <ul class="cyberpunk-list">
+          <li>Developed chatbot that triggers in-game actions based on user input</li>
+          <li>Implemented natural language processing for cat personality simulation</li>
+          <li>Created animated responses using Java Swing graphics</li>
+        </ul>
+      </div>
+    </div>
+    
+    <div class="project">
+      <div class="project-title">Checkers Quest | C++, SFML</div>
+      <div class="project-date">2022</div>
+      <p>A turn-based checkers game with AI opponent.</p>
+      <div class="project-details">
+        <ul class="cyberpunk-list">
+          <li>Built game engine with optimized move validation logic</li>
+          <li>Implemented minimax algorithm for AI decision making</li>
+          <li>Designed pixel art graphics and animations</li>
+        </ul>
+      </div>
+    </div>
+    
+    <div class="project">
+      <div class="project-title">COVID-19 Data Visualization | Python (Flask, Folium), React, Leaflet.js</div>
+      <div class="project-date">2021</div>
+      <p>Interactive dashboard for tracking pandemic statistics.</p>
+      <div class="project-details">
+        <ul class="cyberpunk-list">
+          <li>Visualized infection rates with heatmaps and time-series charts</li>
+          <li>Integrated multiple public health data APIs</li>
+          <li>Created responsive design for desktop and mobile</li>
+        </ul>
+      </div>
+    </div>
+    
+    <div class="project">
+      <div class="project-title">Personal Portfolio Website | HTML, CSS, JavaScript</div>
+      <div class="project-date">2024</div>
+      <p>Cyberpunk-themed showcase of my projects and skills.</p>
+      <div class="project-details">
+        <ul class="cyberpunk-list">
+          <li>Designed custom UI with neon aesthetics and glitch effects</li>
+          <li>Implemented smooth scroll animations and interactive elements</li>
+          <li>Optimized performance for fast loading</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+    <!-- Experience Popup (now includes leadership) -->
+<div class="popup" id="experiencePopup">
+  <span class="close-btn" onclick="closePopup('experiencePopup')">×</span>
+  <div class="popup-header">Experience</div>
+  <div class="popup-content">
+    
+    <!-- Leadership content moved here -->
+    <div class="experience-item">
+      <h3 class="skills-title">Leadership & Volunteering</h3>
+      <ul class="cyberpunk-list">
+        <li>Project Coordinator, UM Programming Project Club</li>
+        <li>Instructor, UMWICS: Led web development workshop</li>
+        <li>Religious Educator, Ismaili Jamatkhana</li>
+        <li>Hackathon Organizer, DECS Club, FAST University</li>
+        <li>President, Social Service Club, FAST University</li>
+        <li>Member, World Association of Girl Guides and Scouts (2008–2020)</li>
+      </ul>
+    </div>
+  </div>
+</div>
+    
+<div class="popup" id="skillsPopup">
+  <span class="close-btn" onclick="closePopup('skillsPopup')">×</span>
+  <div class="popup-header">Technical Skills & Interests</div>
+  <div class="popup-content">
+    <div class="skills-grid">
+      <div class="skill-category">
+        <h3 class="skills-title">Languages</h3>
+        <ul class="cyberpunk-list">
+          <li>C++</li>
+          <li>Java</li>
+          <li>JavaScript</li>
+          <li>Python</li>
+          <li>C</li>
+          <li>R</li>
+          <li>HTML</li>
+          <li>CSS</li>
+        </ul>
+      </div>
+      
+      <div class="skill-category">
+        <h3 class="skills-title">Frameworks/Libraries</h3>
+        <ul class="cyberpunk-list">
+          <li>React.js</li>
+          <li>Angular.js</li>
+          <li>Node.js</li>
+          <li>Matplotlib</li>
+          <li>Next.js</li>
+          <li>Java Swing</li>
+          <li>NLP Libraries</li>
+          <li>TailWind CSS</li>
+        </ul>
+      </div>
+      
+      <div class="skill-category">
+        <h3 class="skills-title">Tools</h3>
+        <ul class="cyberpunk-list">
+          <li>Git</li>
+          <li>GitHub</li>
+          <li>Markdown</li>
+          <li>RStudio</li>
+          <li>VS Code</li>
+          <li>Figma</li>
+        </ul>
+      </div>
+      
+      <div class="skill-category">
+        <h3 class="skills-title">Interests</h3>
+        <ul class="cyberpunk-list">
+          <li>Cryptography</li>
+          <li>Blockchain</li>
+          <li>AI & Machine Learning</li>
+          <li>Full Stack Development</li>
+          <li>Game Development</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+    <!-- Contact Info Popup -->
+    <div class="popup" id="contactPopup">
+      <span class="close-btn" onclick="closePopup('contactPopup')">×</span>
+      <div class="popup-header">Contact Info</div>
+      <div class="popup-content contact-links">
+        <p>Feel free to reach out!</p>
+        <a href="mailto:aliz6@myumanitoba.ca" target="_blank" rel="noopener">Email: aliz6@myumanitoba.ca</a><br>
+        <a href="https://www.linkedin.com/in/zia-ali-a4b106248/" target="_blank" rel="noopener">LinkedIn</a><br>
+        <a href="https://github.com/ziyyaa1" target="_blank" rel="noopener">GitHub</a><br>
+        <a href="tel:204-493-0566" target="_blank" rel="noopener">Phone: +1 234 567 890</a>
+      </div>
+  </div>
+
+    <div id="mobile-controls">
+      <!-- Movement D-Pad -->
+      <div class="d-pad">
+        <button class="control-btn up" id="up">↑</button>
+        <button class="control-btn left" id="left">←</button>
+        <button class="control-btn down" id="down">↓</button>
+        <button class="control-btn right" id="right">→</button>
+      </div>
+      
+      <!-- Action Buttons -->
+      <div class="action-btns">
+        <button class="control-btn jump" id="jump">X</button>
+        <button class="control-btn shoot" id="shoot">C</button>
+      </div>
+    </div>
+
+    <script>
+    //Functionalities
+
+        // Menu toggle function
+        function toggleMenu() 
+        {
+            const menu = document.getElementById('menuItems');
+            if (menu.classList.contains('active')) 
+            {
+                menu.classList.remove('active');
+                setTimeout(() => menu.style.display = 'none', 300);
+            } 
+            else 
+            {
+                menu.style.display = 'flex';
+                setTimeout(() => menu.classList.add('active'), 10);
+            }
+        }
+        
+        //Close menu when clicking outside
+        document.addEventListener('click', function(e) 
+        {
+            const menu = document.getElementById('menuItems');
+            const menuIcon = document.querySelector('.menu-icon');
+            
+            if (!menuIcon.contains(e.target) && !menu.contains(e.target)) 
+            {
+                menu.style.display = 'none';
+                menu.classList.remove('active');
+            }
+        });
+        
+        // Popup functions
+        let wasInstructionsOpen = false;
+        let wasGameOverOpen = false;
+
+        function openPopup(id) 
+        {
+        //Track both special screens' states
+        wasInstructionsOpen = (document.getElementById('instructions-screen').style.display === 'flex');
+        wasGameOverOpen = (document.getElementById('game-over-screen').style.display === 'flex');
+        
+        // Close all popups except Instructions and Game Over
+        document.querySelectorAll('.popup').forEach(popup => 
+        {
+            if (popup.id !== 'instructions-screen' && popup.id !== 'game-over-screen') 
+            {
+                popup.style.display = 'none';
+            }
+        });
+    
+        // Open the requested popup
+        document.getElementById(id).style.display = 'flex';
+        }
+        
+
+        function closePopup(id) 
+        {
+            document.getElementById(id).style.display = 'none';
+            
+            // Re-show Instructions if it was open before
+            if (wasInstructionsOpen && id !== 'instructions-screen') 
+            {
+                document.getElementById('instructions-screen').style.display = 'flex';
+            }
+            
+            // Re-show Game Over if it was open before  
+            if (wasGameOverOpen && id !== 'game-over-screen') 
+            {
+                document.getElementById('game-over-screen').style.display = 'flex';
+            }
+            
+            // Reset trackers
+            wasInstructionsOpen = false;
+            wasGameOverOpen = false;
+        }
+
+        document.getElementById('game-over-button').addEventListener('click', function(e) 
+        {
+            e.stopPropagation();
+            startGameplay();
+        });
+    
+        
+        // Close popup when clicking on overlay
+    document.querySelectorAll('.popup').forEach(popup => 
+    {
+        popup.addEventListener('click', function(e) 
+        {
+            // Only allow closing OTHER popups (not instructions)
+            if (e.target === this && this.id !== 'instructions-screen' && this.id !== 'game-over-screen') 
+            {
+                closePopup(this.id);
+            }
+            // BLOCK all clicks on instructions popup (including content)
+            else if (this.id === 'instructions-screen' || this.id === 'game-over-screen') 
+            {
+                e.stopPropagation(); // Prevents clicks from doing anything
+                return false;
+            }
+        });
+        });
+        
+        // Make functions available to game
+        window.portfolioUI = 
+        {
+            showPopup: openPopup,
+            hidePopup: closePopup
+        };
+
+        function startGame() 
+        {
+            document.getElementById('title-screen').style.display = 'none';
+            document.getElementById('instructions-screen').style.display = 'flex'; // ← This line fixes it
+        }
+        
+        function startGameplay() 
+        {
+             document.getElementById('instructions-screen').style.display = 'none';
+             document.getElementById('game-over-screen').style.display = 'none';
+            closePopup('instructions-screen'); // Use the same popup closing function
+            closePopup('game-over-screen'); // Use the same popup closing function
+
+            document.getElementById('game-over-screen').style.display = 'none';
+            if (window.game) 
+            {
+                game.state.start('PlayGame');
+            }
+        }
+        
+
+        //Make these available to your game.js
+        window.gameUI = 
+        {
+            showGameOver: function() 
+            {
+                document.getElementById('game-over-screen').style.display = 'flex';
+            }
+        };
+
+        window.addEventListener("load", function () {
+  // state variables for each button
+  let mobileControls = {
+    left: false,
+    right: false,
+    up: false,
+    down: false,
+    jump: false,
+    shoot: false
+  };
+
+  // Utility to add touch listeners
+  function setupButton(id, controlKey) {
+    const btn = document.getElementById(id);
+    btn.addEventListener('touchstart', () => mobileControls[controlKey] = true);
+    btn.addEventListener('touchend', () => mobileControls[controlKey] = false);
+    btn.addEventListener('mousedown', () => mobileControls[controlKey] = true);
+    btn.addEventListener('mouseup', () => mobileControls[controlKey] = false);
+    btn.addEventListener('mouseleave', () => mobileControls[controlKey] = false);
+  }
+
+  setupButton('left', 'left');
+  setupButton('right', 'right');
+  setupButton('up', 'up');
+  setupButton('down', 'down');
+  setupButton('jump', 'jump');
+  setupButton('shoot', 'shoot');
+
+  // Expose globally for Phaser update loop
+  window.mobileControls = mobileControls;
+});
+
+    </script>
+</body>
+</html>
