@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!DOCTYPE html> 
 <html lang="en">
 <head>
  <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,7 +7,8 @@
  <style>
  @import url('https://fonts.googleapis.com/css2?family=VT323&family=Rock+Salt&family=Share+Tech+Mono&display=swap');
  
- :root {
+ :root 
+ {
  --neon-pink: #ff279e;
  --neon-blue: #41afff;
  --neon-purple: #8010c4;
@@ -32,23 +33,6 @@
  scroll-behavior: smooth;
  }
  
- body::before {
- content: "";
- position: fixed;
- top: 0; left: 0;
- width: 100%; height: 100%;
- background: radial-gradient(#ff69b4 1px, transparent 1px);
- background-size: 50px 50px;
- animation: sparkleMove 60s linear infinite;
- opacity: 0.2;
- z-index: -1;
- }
- 
- @keyframes sparkleMove {
- from { transform: translate(0, 0); }
- to { transform: translate(-100px, -100px); }
- }
- 
  body::after {
  content: "";
  position: fixed;
@@ -63,8 +47,79 @@
  background-size: 100% 4px;
  pointer-events: none;
  z-index: 0;
- }
  
+ }
+
+ body 
+{ 
+    cursor: none; /* Hide default cursor */
+}
+
+.hologram-cursor 
+{
+  position: fixed;
+  width: 40px;
+  height: 40px;
+  pointer-events: none;
+  z-index: 9999;
+  top: 0;
+  left: 0;
+  transform: translate(-50%, -50%);
+  background-image: url('assets/cursor.cur'); 
+  background-size: contain;
+  background-repeat: no-repeat;
+  transition: transform 0.2s ease;
+}
+
+/* Particle Trail */
+.particle 
+{
+    position: fixed;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9998;
+    transform: translate(-50%, -50%);
+    animation: float 1s ease-out forwards;
+    filter: blur(1px);
+}
+
+@keyframes float 
+{
+    0% { transform: translate(-50%, -50%) scale(1); opacity: 0.8; }
+    100% { transform: translate(-50%, -50%) scale(0.2); opacity: 0; }
+}
+
+
+
+/* Apply glitch to all interactive elements */
+a:hover,
+button:hover,
+.education:hover,
+.awards:hover,
+.menu-item:hover,
+.project:hover,
+.experience:hover,
+.skill-icons img:hover,
+.menu-icon:hover {
+  position: relative;
+  animation: glitch-effect 0.5s linear infinite;
+}
+
+/* Your preferred glitch effect */
+@keyframes glitch-effect {
+  0% { transform: translate(0); }
+  20% { transform: translate(-2px, 2px); }
+  40% { transform: translate(-2px, -2px); }
+  60% { transform: translate(2px, 2px); }
+  80% { transform: translate(2px, -2px); }
+  100% { transform: translate(0); }
+}
+
+@keyframes float-up {
+  to { transform: translateY(-5px); }
+}
  .profile-container {
  position: relative;
  z-index: 10;
@@ -164,7 +219,7 @@
  
  .profile-img {
  position: relative;
- z-index: 1;
+ z-index: 10;
  width: 180px;
  height: 180px;
  border-radius: 50%;
@@ -196,12 +251,6 @@
  transition: all 0.3s ease;
  }
  
- .project:hover, .experience:hover {
- transform: translateY(-5px);
- box-shadow: 
- 0 0 25px rgba(255, 39, 158, 0.5),
- 0 0 35px rgba(128, 16, 196, 0.5);
- }
  
  .menu-icon {
  position: fixed;
@@ -311,53 +360,10 @@
  background-color: rgba(128, 16, 196, 0.2);
  }
  
- .skill-icons {
- display: flex;
- flex-wrap: wrap;
- gap: 15px;
- justify-content: center;
- }
  
- .skill-icons img {
- width: 50px;
- height: 50px;
- filter: drop-shadow(0 0 2px #ff69b4);
- transition: all 0.3s ease;
- }
  
- .skill-icons img:hover {
- transform: scale(1.2);
- filter: drop-shadow(0 0 8px #ff279e);
- }
  
- .glitch {
- position: relative;
- }
- 
- .glitch:hover {
- animation: glitch-effect 0.5s linear infinite;
- }
- 
- @keyframes glitch-effect {
- 0% { transform: translate(0); }
- 20% { transform: translate(-2px, 2px); }
- 40% { transform: translate(-2px, -2px); }
- 60% { transform: translate(2px, 2px); }
- 80% { transform: translate(2px, -2px); }
- 100% { transform: translate(0); }
- }
- 
- .cursor-trail {
- position: fixed;
- width: 6px;
- height: 6px;
- background: #ff69b4;
- border-radius: 50%;
- pointer-events: none;
- z-index: 9999;
- box-shadow: 0 0 10px #ff279e;
- }
- 
+
  /* ===== Tablet & Mobile Styles ===== */
  @media (max-width: 768px) {
  html, body {
@@ -390,6 +396,7 @@
  width: 120px;
  height: 120px;
  margin-bottom: 20px;
+ z-index: 10;
  }
 
  .project, .education, .experience {
@@ -440,6 +447,8 @@
  .profile-img {
  width: 100px;
  height: 100px;
+ position: relative;
+ z-index: 10;
  }
  
  section {
@@ -464,9 +473,33 @@
  font-size: 0.85rem;
  }
  }
+
+ .typewriter-container {
+  font-family: 'VT323', monospace;
+  font-size: 2.5rem;
+  color: #ff279e;
+  text-align: center;
+}
+
+.cursor {
+  display: inline-block;
+  color: #ffec40;
+  animation: blink 0.7s infinite;
+  font-weight: bold;
+}
+
+@keyframes blink {
+  0% { opacity: 1; }
+  50% { opacity: 0; }
+  100% { opacity: 1; }
+}
+
+
+
  </style>
 </head>
 <body>
+  <div class="hologram-cursor"></div>
  <div class="menu-icon" onclick="toggleMenu()">
  <span class="menu-text"></span>
  </div>
@@ -482,8 +515,10 @@
  </div>
  
  <section id="home">
- <h1>Hi, I am Zia & I built stuff.</h1>
- <div class="profile-container">
+  <h1 class="typewriter-container">
+    Hi, I am Zia <span id="typed-text"></span><span class="cursor">|</span>
+  </h1>
+   <div class="profile-container">
  <img src="assets/logo1.JPG" class="profile-img" alt="Zia Ali">
  </div>
  <p>
@@ -511,7 +546,7 @@
  
  <section id="projects">
  <h2>Projects</h2>
- <div class="project glitch">
+ <div class="project">
  <h3>ChatWithCat Simulation | Java, NLP, OpenApache, Java Swing</h3>
  <ul>
  <li>Developed interactive game where users communicate with virtual cat using NLP</li>
@@ -519,7 +554,7 @@
  </ul>
  </div>
  
- <div class="project glitch">
+ <div class="project">
  <h3>COVID-19 Data Visualization | Python (Flask, Folium), React, Leaflet.js</h3>
  <ul>
  <li>Developed web-based dashboard to visualize COVID-19 data with dynamic maps</li>
@@ -527,7 +562,7 @@
  </ul>
  </div>
 
- <div class="project glitch">
+ <div class="project">
  <h3>Checkers Quest | C++, SFML</h3>
  <ul>
  <li>Created a turn-based checkers game with optimized gameplay mechanics</li>
@@ -654,6 +689,113 @@
  sections[0].classList.add('visible');
  }
  });
+
+ // ===== Cursor JavaScript =====
+        // Hologram Cursor Follow
+        const cursor = document.querySelector('.hologram-cursor');
+        document.addEventListener('mousemove', (e) => {
+            cursor.style.left = e.clientX + 'px';
+            cursor.style.top = e.clientY + 'px';
+        });
+
+        // Pink-Yellow Particles
+        document.addEventListener('mousemove', (e) => {
+            // Create 3-5 particles per move
+            for (let i = 0; i < 4; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                
+                // Random pink/yellow color
+                const colors = ['#ff279e', '#ffec40', '#ff8a00'];
+                particle.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                
+                // Random position near cursor
+                const offsetX = (Math.random() - 0.5) * 30;
+                const offsetY = (Math.random() - 0.5) * 30;
+                particle.style.left = e.clientX + offsetX + 'px';
+                particle.style.top = e.clientY + offsetY + 'px';
+                
+                // Random size
+                const size = Math.random() * 4 + 3;
+                particle.style.width = size + 'px';
+                particle.style.height = size + 'px';
+                
+                document.body.appendChild(particle);
+                
+                // Remove after animation
+                setTimeout(() => particle.remove(), 1000);
+            }
+        });
+
+        // Scale up on hover (buttons/links)
+        document.querySelectorAll('a, button, .project').forEach(el => {
+            el.addEventListener('mouseenter', () => {
+                cursor.style.transform = 'translate(-50%, -50%) scale(1.5)';
+                cursor.style.borderColor = '#ff279e';
+            });
+            el.addEventListener('mouseleave', () => {
+                cursor.style.transform = 'translate(-50%, -50%) scale(1)';
+                cursor.style.borderColor = '#ffec40';
+            });
+        });
+
+        // Typewriter Effect
+const phrases = [
+  "& I build stuff.",
+  "& I break stuff.",
+  "& I cry a little.",
+  "& I build better stuff.",
+  "& somehow I enjoy the chaos."
+];
+
+let currentPhrase = 0;
+let letterIndex = 0;
+let isDeleting = false;
+let typingSpeed = 80;
+let pauseBetweenPhrases = 1500;
+const typedText = document.getElementById("typed-text");
+
+function typeEffect() {
+  const currentText = phrases[currentPhrase];
+  
+  if (isDeleting) {
+    // Deleting characters
+    typedText.textContent = currentText.substring(0, letterIndex - 1);
+    letterIndex--;
+    typingSpeed = 40;
+  } else {
+    // Typing characters
+    typedText.textContent = currentText.substring(0, letterIndex + 1);
+    letterIndex++;
+    typingSpeed = 80;
+  }
+
+  // Check if current phrase is complete
+  if (!isDeleting && letterIndex === currentText.length) {
+    // Pause at end of phrase
+    typingSpeed = pauseBetweenPhrases;
+    isDeleting = true;
+  } else if (isDeleting && letterIndex === 0) {
+    // Move to next phrase
+    isDeleting = false;
+    currentPhrase = (currentPhrase + 1) % phrases.length;
+    typingSpeed = 500; // Pause before starting next phrase
+  }
+
+  setTimeout(typeEffect, typingSpeed);
+}
+
+// Start the effect when page loads
+window.addEventListener("DOMContentLoaded", () => {
+  typeEffect();
+  
+  // Your existing section visibility code
+  if (sections.length > 0) {
+    sections[0].classList.add('visible');
+  }
+});
+
+
  </script>
  
 </body>
