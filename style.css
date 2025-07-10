@@ -692,11 +692,12 @@ z-index: 100;
 pointer-events: none; /* Allows clicks to pass through when hidden */
 }
 
-/* Show only on touch devices */
-@media (hover: none) {
 #mobile-controls {
-display: flex;
+  display: none;
 }
+
+#mobile-controls.mobile-visible {
+  display: flex;
 }
 
 .d-pad, .action-btns {

@@ -478,7 +478,8 @@
         function startGame() 
         {
             document.getElementById('title-screen').style.display = 'none';
-            document.getElementById('instructions-screen').style.display = 'flex'; // ← This line fixes it
+            document.getElementById('instructions-screen').style.display = 'flex'; 
+            document.getElementById('mobile-controls').style.display = 'none';
         }
         
         function startGameplay() 
@@ -489,6 +490,9 @@
             closePopup('game-over-screen'); // Use the same popup closing function
 
             document.getElementById('game-over-screen').style.display = 'none';
+
+            document.getElementById('mobile-controls').style.display = 'flex';
+
             if (window.game) 
             {
                 game.state.start('PlayGame');
