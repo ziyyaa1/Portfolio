@@ -32,7 +32,6 @@
  scroll-behavior: smooth;
  }
  
-
  body 
 { 
     cursor: none; /* Hide default cursor */
@@ -80,8 +79,7 @@
 .education:hover,
 .awards:hover,
 .project:hover,
-.experience:hover,
-.skill-icons
+.experience:hover
  {
   position: relative;
   animation: glitch-effect 0.5s linear infinite;
@@ -517,7 +515,7 @@
       height: 480px;
       background: rgba(46, 34, 71, 0.7);
       backdrop-filter: blur(10px);
-      border: 4px solid #ffec40;
+      border: 1px solid #ffec40;
       border-radius: 15px;
       box-shadow: 
       0 0 15px rgba(255, 39, 158, 0.4),
@@ -529,7 +527,27 @@
       position: relative;
       overflow: hidden;
       cursor: pointer;
+      transform-origin: center center;
     }
+
+    .edu-card::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 2;
+  background: linear-gradient(
+    rgba(255, 255, 255, 0.04) 50%,
+    rgba(0, 0, 0, 0.2) 50%
+  );
+  background-size: 100% 4px;
+  opacity: 0.6;
+  mix-blend-mode: overlay;
+  animation: flickerCRT 1.5s infinite;
+}
 
     .edu-card:hover {
       transform: translateY(-10px);
@@ -559,7 +577,11 @@
       backface-visibility: hidden;
       display: flex;
       flex-direction: column;
-      padding: 0;
+      align-items: center;
+      justify-content: center; /* THIS is important */
+      text-align: center;
+      padding: 20px;
+      box-sizing: border-box;
     }
 
     .edu-card-front {
@@ -591,14 +613,15 @@
     }
 
     .card-content {
-      padding: 20px;
+      padding: 0px;
       text-align: center;
-      margin-top: 40px;
+      margin-top: 0px;
     }
 
     .card-content h3 {
       color: #ffec40;
-      font-size: 1.5rem;
+      text-align: center;
+      font-size: 1.2rem;
       margin-bottom: 10px;
       text-shadow: 0 0 5px rgba(255, 236, 64, 0.5);
     }
@@ -607,6 +630,7 @@
       color: #41afff;
       margin: 8px 0;
       font-size: 1rem;
+      text-align: center;
     }
 
     .edu-card-back {
@@ -621,11 +645,13 @@
 
     .edu-card-back h4 {
       color: #ffec40;
-      font-size: 1.3rem;
+      font-size: 1.2rem;
       margin-bottom: 20px;
       border-bottom: 2px solid #ff279e;
       padding-bottom: 10px;
       width: 80%;
+      text-align: center;
+
     }
 
     .edu-card-back p {
@@ -700,6 +726,35 @@
       .edu-card.active {
         transform: translate(-50%, -50%) scale(1);
       }
+
+      /* Project-specific image styling */
+.edu-card-front .university-image {
+  height: 180px;
+  object-fit: cover;
+  filter: brightness(0.8) saturate(1.2);
+}
+
+/* Project card content adjustments */
+.edu-card-front .card-content h3 {
+  font-size: 1.4rem;
+  margin: 10px 0 5px;
+}
+
+.edu-card-front .card-content p {
+  color: #41afff;
+  font-size: 0.9rem;
+  margin: 5px 0;
+}
+
+.edu-card-back h4 {
+  font-size: 1rem;
+  margin-bottom: 15px;
+}
+
+.edu-card-back p {
+  font-size: 0.9rem;
+  margin: 8px 0;
+}
     }
 
    /* Initial state: off-screen + invisible */
@@ -837,6 +892,71 @@
   }
 }
 
+.experience-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+  margin-top: 30px;
+}
+
+.experience-card {
+  background: rgba(46, 34, 71, 0.7);
+  border-left: 3px solid var(--neon-pink);
+  padding: 15px 20px;
+  border: 1px solid #ffec40;
+  border-radius: 15px;
+  color: #41afff;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 1rem;
+  max-width: 360px;
+  width: 100%;
+  box-shadow:
+    0 0 15px rgba(255, 39, 158, 0.3),
+    inset 0 0 10px rgba(255,255,255,0.05);
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.3s ease;
+  cursor: default;
+}
+
+.experience-card:hover {
+  transform: translateY(-5px);
+  box-shadow:
+    0 0 25px rgba(255, 39, 158, 0.4),
+    inset 0 0 15px rgba(255,255,255,0.08);
+}
+
+.experience-card::after {
+  content: "";
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  pointer-events: none;
+  z-index: 2;
+  background: linear-gradient(
+    rgba(255, 255, 255, 0.04) 50%,
+    rgba(0, 0, 0, 0.2) 50%
+  );
+  background-size: 100% 4px;
+  opacity: 0.6;
+  mix-blend-mode: overlay;
+}
+
+
+.skill-icons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  justify-content: center;
+  transition: none !important;
+  animation: none !important;
+}
+.skill-icons img {
+  width: 100px; /* or 120px if you want larger badges */
+  height: auto;
+  flex-shrink: 0; /* prevents shrinking */
+}
 
  </style>
 </head>
@@ -897,7 +1017,7 @@
   <h2>Education</h2>
 
   <div class="edu-card-wrapper">
-    <div class="edu-card slide-left" onclick="expandCard(this)">
+    <div class="edu-card slide-left">
       <div class="edu-card-inner">
         <div class="edu-card-front">
           <img src="assets/uofm.jpg" class="university-image" alt="University of Manitoba Campus">
@@ -910,9 +1030,9 @@
           <div class="flip-instruction">Hover to flip</div>
         </div>
         <div class="edu-card-back">
-          <h4>B.C.Sc. + Math & Stats Minor</h4>
+          <h4>Computer Science Majors.</h4>
+          <p>Mathematics, Statistics and Economics Minor.</p>
           <p>Dean's List Honors</p>
-          <p>Specializing in AI & Data Science</p>
           <p>3.8 GPA</p>
           <p>Expected Graduation: 2026</p>
         </div>
@@ -933,9 +1053,7 @@
         </div>
         <div class="edu-card-back">
           <h4>B.C.Sc. Computer Science</h4>
-          <p>Active in DECS Club</p>
-          <p>Hackathon Organizer</p>
-          <p>Web Dev & C++ Projects</p>
+          <p>Completed 21 credit hours and transferred courses to international university.</p>
           <p>3.6 GPA</p>
         </div>
       </div>
@@ -945,83 +1063,257 @@
   <div class="card-overlay" onclick="closeAllCards()"></div>
 </section>
  
- <section id="projects">
- <h2>Projects</h2>
- <div class="project">
- <h3>ChatWithCat Simulation | Java, NLP, OpenApache, Java Swing</h3>
- <ul>
- <li>Developed interactive game where users communicate with virtual cat using NLP</li>
- <li>The chatbot triggers in-game actions like movement, sounds, and animations</li>
- </ul>
- </div>
- 
- <div class="project">
- <h3>COVID-19 Data Visualization | Python (Flask, Folium), React, Leaflet.js</h3>
- <ul>
- <li>Developed web-based dashboard to visualize COVID-19 data with dynamic maps</li>
- <li>Integrated APIs to show real-time statistics and geospatial data</li>
- </ul>
- </div>
+ <!-- Updated Projects Section -->
+<section id="projects">
+  <h2>Projects</h2>
 
- <div class="project">
- <h3>Checkers Quest | C++, SFML</h3>
- <ul>
- <li>Created a turn-based checkers game with optimized gameplay mechanics</li>
- <li>Implemented AI logic for an intelligent opponent to challenge players</li>
- </ul>
- </div>
- </section>
- 
+  <div class="edu-card-wrapper">
+    <!-- Project 1 -->
+    <div class="edu-card slide-right">
+      <div class="edu-card-inner">
+        <div class="edu-card-front">
+          <img src="assets/chatwithcats.gif" class="university-image" alt="ChatWithCat Project">
+          <div class="card-content">
+            <h3>ChatWithCat Simulation</h3>
+            <p>Java, NLP, OpenApache</p>
+          </div>
+          <div class="flip-instruction">Click to flip</div>
+        </div>
+        <div class="edu-card-back">
+          <h4>Java Game with NLP</h4>
+          <p>Interactive game where users communicate with virtual cat using NLP</p>
+          <p>Chatbot triggers in-game actions like movement and sounds</p>
+          <p>Built with Java Swing for GUI</p>
+          <p>Implemented natural language processing</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Project 2 -->
+    <div class="edu-card slide-right">
+      <div class="edu-card-inner">
+        <div class="edu-card-front">
+          <img src="assets/covid-19.jpg" class="university-image" alt="COVID-19 Dashboard">
+          <div class="card-content">
+            <h3>COVID-19 Data Visualization</h3>
+            <p>Python, React, Leaflet.js</p>
+          </div>
+          <div class="flip-instruction">Click to flip</div>
+        </div>
+        <div class="edu-card-back">
+          <h4>Real-time Data Dashboard</h4>
+          <p>Web-based dashboard to visualize COVID-19 data</p>
+          <p>Dynamic maps showing infection rates</p>
+          <p>Integrated multiple data APIs</p>
+          <p>Frontend with React and Leaflet.js</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Project 3 -->
+    <div class="edu-card slide-left">
+      <div class="edu-card-inner">
+        <div class="edu-card-front">
+          <img src="assets/checkersquest.jpeg" class="university-image" alt="Checkers Game">
+          <div class="card-content">
+            <h3>Checkers Quest</h3>
+            <p>C++, SFML</p>
+          </div>
+          <div class="flip-instruction">Click to flip</div>
+        </div>
+        <div class="edu-card-back">
+          <h4>Checkers Game with AI</h4>
+          <p>Turn-based checkers game with optimized mechanics</p>
+          <p>Implemented AI opponent with difficulty levels</p>
+          <p>Used SFML for graphics and input</p>
+          <p>Pathfinding and decision algorithms</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
  <section id="experience">
  <h2>Leadership & Volunteering Experience</h2>
- <div class="experience">
- <ul>
- <li>Project Coordinator, UM Programming Project Club</li>
- <li>Instructor, UMWICS: Led web development workshop</li>
- <li>Religious Educator, Ismaili Jamatkhana</li>
- <li>Hackathon Organizer, DECS Club, FAST University</li>
- <li>President, Social Service Club, FAST University</li>
- <li>Member, World Association of Girl Guides and Scouts (2008–2020)</li>
- </ul>
- </div>
+ <div class="experience-wrapper">
+  <div class="experience-card slide-left">Project Coordinator, UM Programming Project Club</div>
+  <div class="experience-card slide-right">Instructor, UMWICS: Led web development workshop</div>
+  <div class="experience-card slide-left">Religious Educator, Ismaili Jamatkhana</div>
+  <div class="experience-card slide-right">Hackathon Organizer, DECS Club, FAST University</div>
+  <div class="experience-card slide-left">President, Social Service Club, FAST University</div>
+  <div class="experience-card slide-right">Member, World Association of Girl Guides and Scouts (2008–2020)</div>
+</div>
+
  </section>
 
  <section id="skills">
- <h2>Technical Skills</h2>
- <div class="project">
- <h3>Languages</h3>
- <p>C++, Java, JavaScript, C, R, Python, HTML, CSS</p>
- 
- <h3>Frameworks/Libraries</h3>
- <p>React.js, Angular.js, Node.js, Matplotlib, Next.js, Java Swing, NLP Libraries, TailWind CSS, Phaser</p>
- 
- <h3>Tools</h3>
- <p>Git, GitHub, Markdown, RStudio, VS Code, Figma</p>
- 
- <h3>Interests</h3>
- <p>Cryptography, Blockchain, AI & Machine Learning, Full Stack Development, Game Development</p>
- </div>
- </section>
+  <h2>Technical Skills</h2>
+  <div class="experience-wrapper">
+  <div class="experience-card slide-left">
+    <h3>Languages</h3>
+    <div class="skill-icons">
+      <img src="https://img.shields.io/badge/C-%2300599C.svg?style=for-the-badge&logo=c&logoColor=white" alt="C">
+      <img src="https://img.shields.io/badge/C++-00599C?style=for-the-badge&logo=c%2B%2B&logoColor=white" alt="C++">
+      <img src="https://img.shields.io/badge/Java-ED8B00?style=for-the-badge&logo=java&logoColor=white" alt="Java">
+      <img src="https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black" alt="JavaScript">
+      <img src="https://img.shields.io/badge/R-276DC3?style=for-the-badge&logo=r&logoColor=white" alt="R">
+      <img src="https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white" alt="HTML">
+      <img src="https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white" alt="CSS">
+    </div>
+  </div>
+
+  <div class="experience-card slide-right">
+    <h3>Frameworks & Libraries</h3>
+    <div class="skill-icons">
+      <img src="https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB" alt="React">
+      <img src="https://img.shields.io/badge/Angular-DD0031?style=for-the-badge&logo=angular&logoColor=white" alt="Angular">
+      <img src="https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=nodedotjs&logoColor=white" alt="Node.js">
+      <img src="https://img.shields.io/badge/Matplotlib-11557c?style=for-the-badge&logo=matplotlib&logoColor=white" alt="Matplotlib">
+      <img src="https://img.shields.io/badge/Next.js-000000?style=for-the-badge&logo=next.js&logoColor=white" alt="Next.js">
+      <img src="https://img.shields.io/badge/Java%20Swing-ED8B00?style=for-the-badge&logo=java&logoColor=white" alt="Java Swing">
+      <img src="https://img.shields.io/badge/NLP-7952B3?style=for-the-badge&logo=spacy&logoColor=white" alt="NLP">
+      <img src="https://img.shields.io/badge/TailwindCSS-06B6D4?style=for-the-badge&logo=tailwind-css&logoColor=white" alt="Tailwind">
+    </div>
+  </div>
+  
+  <div class="experience-card slide-left">
+    <h3>Tools</h3>
+    <div class="skill-icons">
+      <img src="https://img.shields.io/badge/Git-F05032?style=for-the-badge&logo=git&logoColor=white" alt="Git">
+      <img src="https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=github&logoColor=white" alt="GitHub">
+      <img src="https://img.shields.io/badge/Markdown-000000?style=for-the-badge&logo=markdown&logoColor=white" alt="Markdown">
+      <img src="https://img.shields.io/badge/RStudio-75AADB?style=for-the-badge&logo=rstudio&logoColor=white" alt="RStudio">
+      <img src="https://img.shields.io/badge/VS%20Code-007ACC?style=for-the-badge&logo=visual-studio-code&logoColor=white" alt="VS Code">
+      <img src="https://img.shields.io/badge/Figma-F24E1E?style=for-the-badge&logo=figma&logoColor=white" alt="Figma">
+    </div>
+  </div>
+</div>
+</section> 
+
+<section id="certificates">
+  <h2>Certificates</h2>
+
+  <div class="edu-card-wrapper">
+
+    <!-- Certificate 1: TCPS 2 -->
+    <div class="edu-card slide-right">
+      <div class="edu-card-inner">
+        <div class="edu-card-front">
+          <img src="assets/TCPS2-core 2022-certificate.pdf.jpg" class="university-image" alt="TCPS certificate">
+          <div class="card-content">
+            <h3>TCPS‑2 CORE: 2022</h3>
+          </div>
+          <div class="flip-instruction">Click to flip</div>
+        </div>
+        <div class="edu-card-back">
+          <h4>TCPS‑2 Core Certificate</h4>
+          <p>Full name: Tri‑Council Policy Statement: Ethical Conduct for Research Involving Humans</p>
+          <p>Issued: 2022</p>
+          <p>Organization: CIHR (Canada)</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Certificate 2: Git & GitHub -->
+    <div class="edu-card slide-left">
+      <div class="edu-card-inner">
+        <div class="edu-card-front">
+          <img src="assets/github.jpg" class="university-image" alt="Git and GitHub Bootcamp">
+          <div class="card-content">
+            <h3>Git &amp; GitHub Bootcamp</h3>
+          </div>
+          <div class="flip-instruction">Click to flip</div>
+        </div>
+        <div class="edu-card-back">
+          <h4>The Git & GitHub Bootcamp</h4>
+          <p>Platform: Udemy</p>
+          <p>Instructor: Colt Steele</p>
+          <p>Mastered Git version control & GitHub collaboration tools</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Certificate 3: Web Dev by Angela Yu -->
+    <div class="edu-card slide-right">
+      <div class="edu-card-inner">
+        <div class="edu-card-front">
+          <img src="assets/webdev.jpg" class="university-image" alt="Web Dev Bootcamp">
+          <div class="card-content">
+            <h3>Web Dev Bootcamp</h3>
+          </div>
+          <div class="flip-instruction">Click to flip</div>
+        </div>
+        <div class="edu-card-back">
+          <h4>The Complete Web Development Bootcamp</h4>
+          <p>Platform: Udemy</p>
+          <p>Instructor: Angela Yu</p>
+          <p>Full-stack web development: HTML, CSS, JS, Node.js</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Certificate 4: JavaScript by Jonas -->
+    <div class="edu-card slide-left">
+      <div class="edu-card-inner">
+        <div class="edu-card-front">
+          <img src="assets/js.webp" class="university-image" alt="JS Bootcamp">
+          <div class="card-content">
+            <h3>JS Bootcamp</h3>
+          </div>
+          <div class="flip-instruction">Click to flip</div>
+        </div>
+        <div class="edu-card-back">
+          <h4>JavaScript - Zero to Expert</h4>
+          <p>Platform: Udemy</p>
+          <p>Instructor: Jonas Schmedtmann</p>
+          <p>Mastered JS fundamentals, ES6+, DOM, AJAX, OOP</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Certificate 5: Angular by Maximilian -->
+    <div class="edu-card slide-right">
+      <div class="edu-card-inner">
+        <div class="edu-card-front">
+          <img src="assets/angular.webp" class="university-image" alt="Angular Guide">
+          <div class="card-content">
+            <h3>Angular Complete Guide</h3>
+          </div>
+          <div class="flip-instruction">Click to flip</div>
+        </div>
+        <div class="edu-card-back">
+          <h4>Angular - The Complete Guide (2025 Edition)</h4>
+          <p>Platform: Udemy</p>
+          <p>Instructor: Maximilian Schwarzmüller</p>
+          <p>Advanced Angular, RxJS, Routing, Forms, Deployment</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+
 
  <section id="awards">
  <h2>Awards & Honors</h2>
- <div class="awards">
- <ul>
- <li>Habib High Achievers Meritorious Award</li>
- <li>AKHSS Award for High Achievers</li>
- <li>Sidhpur Foundation Award</li>
- </ul>
- </div>
+ <div class="experience-wrapper">
+  <div class="experience-card slide-left">Habib High Achievers Meritorious Award</div>
+  <div class="experience-card slide-right">AKHSS Award for High Achievers</div>
+  <div class="experience-card slide-left">Sidhpur Foundation Award</div>
+  <div class="experience-card slide-right">University of Manitoba Dean's List</div>
+</div>
  </section>
 
  <section id="contact">
  <h2>Contact Info</h2>
- <div class="project">
- <p>Winnipeg, Canada</p>
- <p>Phone: <a href="tel:204-493-0566">204-493-0566</a></p>
- <p>Email: <a href="mailto:aliz6@myumanitoba.ca">aliz6@myumanitoba.ca</a></p>
- <p><a href="https://www.linkedin.com/in/zia-ali-a4b106248/" target="_blank">LinkedIn</a> | <a href="https://github.com/ziyyaa1" target="_blank">GitHub</a></p>
- </div>
+ <div class="experience-wrapper">
+  <div class="experience-card slide-right">Phone: <a href="tel:204-493-0566">204-493-0566</a></div>
+  <div class="experience-card slide-left">Email: <a href="mailto:aliz6@myumanitoba.ca">aliz6@myumanitoba.ca</a></div>
+  <div class="experience-card slide-left"><a href="https://www.linkedin.com/in/zia-ali-a4b106248/" target="_blank">LinkedIn</a></div>
+  <div class="experience-card slide-right"><a href="https://github.com/ziyyaa1" target="_blank">GitHub</a></div>
+</div>
  </section>
 
  <script>
@@ -1078,9 +1370,11 @@
  entries.forEach(entry => {
  if (entry.isIntersecting) {
  entry.target.classList.add('visible');
- if (entry.target.id === 'education') {
+ if (entry.target.id === 'education' || entry.target.id === 'projects' ||entry.target.id === 'experience' ||entry.target.id === 'awards' ||entry.target.id === 'contact' ||entry.target.id === 'skills' ||entry.target.id === 'certificates' ) {
       const eduCards = entry.target.querySelectorAll('.edu-card');
       eduCards.forEach(card => card.classList.add('visible'));
+      const experienceCards = entry.target.querySelectorAll('.experience-card');
+        experienceCards.forEach(card => card.classList.add('visible'));
     }
  }
  });
@@ -1221,18 +1515,7 @@ window.addEventListener("DOMContentLoaded", () => {
   }
 });
 
-    // Close card when clicking outside or pressing ESC
-    document.addEventListener('click', function(event) {
-      if (!event.target.closest('.edu-card.active')) {
-        closeAllCards();
-      }
-    });
 
-    document.addEventListener('keydown', function(event) {
-      if (event.key === 'Escape') {
-        closeAllCards();
-      }
-    });
 
     // Updated Carousel JavaScript
 document.addEventListener('DOMContentLoaded', function() {
