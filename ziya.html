@@ -32,22 +32,6 @@
  scroll-behavior: smooth;
  }
  
- body::after {
- content: "";
- position: fixed;
- top: 0;
- left: 0;
- width: 100%;
- height: 100%;
- background: linear-gradient(
- rgba(18, 16, 16, 0) 50%, 
- rgba(0, 0, 0, 0.25) 50%
- );
- background-size: 100% 4px;
- pointer-events: none;
- z-index: 0;
- 
- }
 
  body 
 { 
@@ -231,21 +215,52 @@
  box-shadow: 0 0 40px #a10955;
  }
  
- /* Cyberpunk cards */
  .project, .education, .experience, .skills-container, .volunteering, .awards {
- background: rgba(46, 34, 71, 0.7);
- backdrop-filter: blur(10px);
- margin: 15px 0;
- border-left: 3px solid #ff279e;
- padding: 20px;
- max-width: 800px;
- width: 90%;
- border-radius: 5px;
- box-shadow: 
- 0 0 15px rgba(255, 39, 158, 0.3),
- inset 0 0 10px rgba(255,255,255,0.1);
- transition: all 0.3s ease;
- }
+  position: relative; /* required for ::after */
+  background: rgba(46, 34, 71, 0.7);
+  backdrop-filter: blur(10px);
+  margin: 15px 0;
+  border-left: 3px solid #ff279e;
+  padding: 20px;
+  max-width: 800px;
+  width: 90%;
+  border-radius: 5px;
+  box-shadow: 
+    0 0 15px rgba(255, 39, 158, 0.3),
+    inset 0 0 10px rgba(255,255,255,0.1);
+  transition: all 0.3s ease;
+  overflow: hidden; /* ensures scanlines don't spill out */
+}
+.project::after,
+.education::after,
+.experience::after,
+.skills-container::after,
+.volunteering::after,
+.awards::after, .carousel-wrapper::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 2;
+  background: linear-gradient(
+    rgba(255, 255, 255, 0.04) 50%,
+    rgba(0, 0, 0, 0.2) 50%
+  );
+  background-size: 100% 4px;
+  opacity: 0.6;
+  mix-blend-mode: overlay; /* makes it subtle and blend nicely */
+  animation: flickerCRT 1.5s infinite;
+
+}
+@keyframes flickerCRT {
+  0%, 100% { opacity: 0.6; }
+  50% { opacity: 0.4; }
+}
+
+
  
  
  .menu-icon {
@@ -393,7 +408,7 @@
  z-index: 10;
  }
 
- .project, .education, .experience {
+ .project, .education, .experience  {
  padding: 15px;
  margin: 15px 0;
  width: 95%;
@@ -707,6 +722,121 @@
   opacity: 1;
   transform: translateX(0);
 }
+/* Updated Carousel Styles */
+.carousel-wrapper {
+  width: 90%;
+  max-width: 800px;
+  margin: 15px auto;
+  position: relative;
+  overflow: hidden;
+  background: rgba(46, 34, 71, 0.7);
+  backdrop-filter: blur(10px);
+  border-left: 3px solid #ff279e;
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 
+    0 0 15px rgba(255, 39, 158, 0.3),
+    inset 0 0 10px rgba(255,255,255,0.1);
+  transition: all 0.3s ease;
+  overflow: hidden;
+}
+
+
+.carousel-track {
+  display: flex;
+  transition: transform 0.5s ease-in-out;
+  width: 100%;
+}
+
+.carousel-card {
+  flex: 0 0 100%;
+  width: 100%;
+  padding: 0 10px;
+  box-sizing: border-box;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 150px;
+}
+
+.card-content {
+  color: #41afff;
+  font-size: 1.1rem;
+  line-height: 1.6;
+  text-align: center;
+  padding: 20px;
+  width: 100%;
+}
+
+.carousel-controls {
+  position: absolute;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  top: 50%;
+  left: 0;
+  transform: translateY(-50%);
+  padding: 0 15px;
+  box-sizing: border-box;
+  z-index: 3;
+}
+
+.carousel-controls button {
+  font-size: 2rem;
+  background: none;
+  border: none;
+  color: #ffec40;
+  cursor: pointer;
+  text-shadow: 0 0 10px rgba(255, 236, 64, 0.7);
+  padding: 5px 15px;
+  border-radius: 50%;
+  transition: all 0.3s ease;
+  opacity: 0.7;
+}
+
+.carousel-controls button:hover {
+  opacity: 1;
+  text-shadow: 0 0 15px rgba(255, 236, 64, 0.9);
+}
+
+.carousel-controls button:disabled {
+  opacity: 0.2;
+  cursor: not-allowed;
+}
+
+.carousel-indicator {
+  text-align: center;
+  margin-top: 10px;
+  color: #ffec40;
+  font-family: 'VT323', monospace;
+  font-size: 1.2rem;
+}
+
+@media (max-width: 768px) {
+  .carousel-card {
+    padding: 0 5px;
+  }
+  
+  .carousel-track {
+    width: 100%;
+  }
+
+  .carousel-wrapper {
+    width: 100%;
+    padding: 10px;
+  }
+
+  .card-content {
+    padding: 10px;
+    font-size: 0.85rem;
+  }
+
+  .carousel-controls button {
+    font-size: 1.2rem;
+    padding: 4px 8px;
+  }
+}
+
 
  </style>
 </head>
@@ -732,13 +862,36 @@
   </h1>
    <div class="profile-container">
  <img src="assets/logo1.JPG" class="profile-img" alt="Zia Ali">
- </div>
- <p>
-  I kicked things off at FAST Karachi, and now I’m majoring in Computer Science at the University of Manitoba — casually stacking minors in Math, Stats, and Econ along the way (because apparently I enjoy stress).<br><br>
-  I like building things that actually work (and sometimes break, but we move). From full stack apps to AI/ML, crypto, and blockchain — I’m into tech that’s shaping what’s next, not just what’s hyped right now.<br><br>
-  Sometimes you’ll find me dropping videos on YouTube when the mood hits.<br><br>
-  I overthink, overbuild, and somehow still enjoy the chaos. Still learning. Still shipping. Still figuring it out — but making it look good while I do.<br><br>
-</p> </section>
+ <div class="carousel-wrapper">
+  <div class="carousel-track">
+    <!-- Card 1 -->
+    <div class="carousel-card">
+      <div class="card-content">
+        <p>I kicked things off at FAST Karachi, and now I'm majoring in Computer Science at the University of Manitoba — casually stacking minors in Math, Stats, and Econ along the way (because apparently I enjoy stress).</p>
+      </div>
+    </div>
+    
+    <!-- Card 2 -->
+    <div class="carousel-card">
+      <div class="card-content">
+        <p>I like building things that actually work (and sometimes break, but we move). From full stack apps to AI/ML, crypto, and blockchain — I'm into tech that's shaping what's next, not just what's hyped right now.</p>
+      </div>
+    </div>
+    
+    <!-- Card 3 -->
+    <div class="carousel-card">
+      <div class="card-content">
+        <p>I overthink, overbuild, and somehow still enjoy the chaos. Still learning. Still shipping. Still figuring it out — but making it look good while I do.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="carousel-controls">
+    <button onclick="prevSlide()">❮</button>
+    <button onclick="nextSlide()">❯</button>
+  </div>
+</div>
+ </section>
  
 <section id="education">
   <h2>Education</h2>
@@ -764,7 +917,6 @@
           <p>Expected Graduation: 2026</p>
         </div>
       </div>
-      <button class="close-card" onclick="closeCard(this.parentNode)">×</button>
     </div>
 
     <div class="edu-card slide-right" onclick="expandCard(this)">
@@ -1082,7 +1234,54 @@ window.addEventListener("DOMContentLoaded", () => {
       }
     });
 
-    
+    // Updated Carousel JavaScript
+document.addEventListener('DOMContentLoaded', function() {
+  const track = document.querySelector('.carousel-track');
+  const slides = document.querySelectorAll('.carousel-card');
+  const nextBtn = document.querySelector('.carousel-controls button:last-child');
+  const prevBtn = document.querySelector('.carousel-controls button:first-child');
+  const indicator = document.createElement('div');
+  indicator.className = 'carousel-indicator';
+  document.querySelector('.carousel-wrapper').appendChild(indicator);
+  
+  let currentIndex = 0;
+
+  function updateCarousel() {
+    track.style.transform = `translateX(-${currentIndex * 100}%)`;
+    updateControls();
+    updateIndicator();
+  }
+
+  function updateControls() {
+    prevBtn.disabled = currentIndex === 0;
+    nextBtn.disabled = currentIndex === slides.length - 1;
+  }
+
+  function updateIndicator() {
+    indicator.textContent = `${currentIndex + 1}/${slides.length}`;
+  }
+
+  function nextSlide() {
+    if (currentIndex < slides.length - 1) {
+      currentIndex++;
+      updateCarousel();
+    }
+  }
+
+  function prevSlide() {
+    if (currentIndex > 0) {
+      currentIndex--;
+      updateCarousel();
+    }
+  }
+
+  // Event listeners
+  nextBtn.addEventListener('click', nextSlide);
+  prevBtn.addEventListener('click', prevSlide);
+
+  // Initialize
+  updateCarousel();
+});
  </script>
  
 </body>
