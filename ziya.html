@@ -35,6 +35,7 @@
  body 
 { 
     cursor: none; /* Hide default cursor */
+    overflow-x: hidden;
 }
 
 .hologram-cursor 
@@ -74,30 +75,6 @@
 }
 
 
-
-/* Apply glitch to all interactive elements */
-.education:hover,
-.awards:hover,
-.project:hover,
-.experience:hover
- {
-  position: relative;
-  animation: glitch-effect 0.5s linear infinite;
-}
-
-/* Your preferred glitch effect */
-@keyframes glitch-effect {
-  0% { transform: translate(0); }
-  20% { transform: translate(-2px, 2px); }
-  40% { transform: translate(-2px, -2px); }
-  60% { transform: translate(2px, 2px); }
-  80% { transform: translate(2px, -2px); }
-  100% { transform: translate(0); }
-}
-
-@keyframes float-up {
-  to { transform: translateY(-5px); }
-}
  .profile-container {
  position: relative;
  z-index: 1000;
@@ -127,25 +104,6 @@
  transform: translateY(0);
  }
  
- .scroll-container {
- max-height: calc(100vh - 200px);
- overflow-y: auto;
- width: 100%;
- padding-right: 5px;
- scrollbar-width: thin;
- scrollbar-color: var(--neon-pink) rgba(46, 34, 71, 0.5);
- }
-
- .scroll-container::-webkit-scrollbar {
- width: 5px;
- }
- .scroll-container::-webkit-scrollbar-track {
- background: rgba(46, 34, 71, 0.5);
- }
- .scroll-container::-webkit-scrollbar-thumb {
- background: var(--neon-pink);
- border-radius: 3px;
- }
  
  h1, h2 {
  color: #ff279E;
@@ -713,11 +671,6 @@
         height: 150px;
       }
       
-      .university-logo {
-        top: 120px;
-        width: 70px;
-        height: 70px;
-      }
       
       .card-content {
         margin-top: 30px;
@@ -779,34 +732,45 @@
 }
 /* Updated Carousel Styles */
 .carousel-wrapper {
-  width: 90%;
-  max-width: 800px;
+  width: 80%;
+  max-width: 80%;
   margin: 15px auto;
   position: relative;
   overflow: hidden;
   background: rgba(46, 34, 71, 0.7);
   backdrop-filter: blur(10px);
   border-left: 3px solid #ff279e;
-  padding: 20px;
+  padding: 20px 10px;
   border-radius: 5px;
   box-shadow: 
     0 0 15px rgba(255, 39, 158, 0.3),
     inset 0 0 10px rgba(255,255,255,0.1);
   transition: all 0.3s ease;
   overflow: hidden;
+  box-sizing: border-box;
 }
 
+/* 🖥 On screens wider than 992px (desktop), limit to 70% */
+@media (min-width: 992px) {
+  .carousel-wrapper {
+    width: 80%;
+    max-width: 800px;
+  }
+}
 
 .carousel-track {
   display: flex;
   transition: transform 0.5s ease-in-out;
   width: 100%;
+  box-sizing: border-box;
 }
 
 .carousel-card {
   flex: 0 0 100%;
   width: 100%;
   padding: 0 10px;
+  max-width: 100%;
+  box-sizing: border-box;
   box-sizing: border-box;
   display: flex;
   justify-content: center;
@@ -1366,19 +1330,26 @@
  
  // Intersection observer for scroll animations
  const sections = document.querySelectorAll('section');
+ // Update your Intersection Observer callback
  const observer = new IntersectionObserver((entries) => {
- entries.forEach(entry => {
- if (entry.isIntersecting) {
- entry.target.classList.add('visible');
- if (entry.target.id === 'education' || entry.target.id === 'projects' ||entry.target.id === 'experience' ||entry.target.id === 'awards' ||entry.target.id === 'contact' ||entry.target.id === 'skills' ||entry.target.id === 'certificates' ) {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
       const eduCards = entry.target.querySelectorAll('.edu-card');
       eduCards.forEach(card => card.classList.add('visible'));
       const experienceCards = entry.target.querySelectorAll('.experience-card');
-        experienceCards.forEach(card => card.classList.add('visible'));
+      experienceCards.forEach(card => card.classList.add('visible'));
+    } else {
+      // REMOVE visible class when section is out of view
+      entry.target.classList.remove('visible');
+      const eduCards = entry.target.querySelectorAll('.edu-card');
+      eduCards.forEach(card => card.classList.remove('visible'));
+      const experienceCards = entry.target.querySelectorAll('.experience-card');
+      experienceCards.forEach(card => card.classList.remove('visible'));
     }
- }
- });
- }, { threshold: 0.1 });
+  });
+}, { threshold: 0.1 });
+
  
  sections.forEach(section => observer.observe(section));
  
