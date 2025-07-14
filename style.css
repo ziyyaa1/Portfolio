@@ -696,7 +696,7 @@ pointer-events: auto; /* Enable clicks */
 }
 
 #mobile-controls.hidden {
-  display: none;
+  display: none !important;
 }
 
 #mobile-controls.mobile-visible {

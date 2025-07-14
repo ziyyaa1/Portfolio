@@ -349,7 +349,7 @@
       </div>
   </div>
 
-    <div id="mobile-controls">
+    <div id="mobile-controls" class="hidden" >
       <!-- Movement D-Pad -->
       <div class="d-pad">
         <button class="control-btn up" id="up" data-action="up">↑</button>
@@ -487,6 +487,7 @@
         {
              document.getElementById('instructions-screen').style.display = 'none';
              document.getElementById('game-over-screen').style.display = 'none';
+             document.getElementById('mobile-controls').classList.remove('hidden');
             closePopup('instructions-screen'); // Use the same popup closing function
             closePopup('game-over-screen'); // Use the same popup closing function
 
