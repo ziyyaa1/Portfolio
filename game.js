@@ -182,34 +182,9 @@ playGame.prototype =
   },
 
   setupMobileControls: function() {
-    this.mobileInput = {
-      left: false,
-      right: false,
-      up: false,
-      down: false,
-      jump: false,
-      shoot: false
-    };
-  
-    // Only activate if touch device
-    if (!game.device.touch) return;
-  
-    const controls = document.getElementById('mobile-controls');
-    controls.style.display = 'flex';
-  
-    // Button event handlers
-    const setControl = (id, value) => {
-      const btn = document.getElementById(id);
-      btn.ontouchstart = () => this.mobileInput[value] = true;
-      btn.ontouchend = () => this.mobileInput[value] = false;
-    };
-  
-    setControl('left', 'left');
-    setControl('right', 'right');
-    setControl('up', 'up');
-    setControl('down', 'down');
-    setControl('jump', 'jump');
-    setControl('shoot', 'shoot');
+    // Use the global mobileControls from HTML instead of creating duplicate
+    // The HTML already handles the mobile controls setup
+    console.log('Mobile controls setup completed - using global mobileControls');
   },
 
   addDecorations: function() 
@@ -716,14 +691,14 @@ if (!tileBelow || tileBelow.index !== 3) {
       player.animations.play("climb");
 
       var velY = 180;
-      if (this.wasd.crouch.isDown) {
+      if (isDown) {
         player.body.velocity.y = velY;
-      } else if (this.wasd.up.isDown) {
+      } else if (isUp) {
         player.body.velocity.y = -velY;
       }
 
       //horizontal
-      if (this.wasd.left.isDown) {
+      if (isLeft) {
 
       } else {
         player.body.velocity.x = 0;
@@ -738,17 +713,17 @@ if (!tileBelow || tileBelow.index !== 3) {
     if (player.body.onFloor()) {
       jumpingFlag = false;
     }
-    if (this.wasd.left.isDown) {
+    if (isLeft) {
       player.body.velocity.x = -vel;
 
       player.scale.x = -1;
-    } else if (this.wasd.right.isDown) {
+    } else if (isRight) {
       player.body.velocity.x = vel;
 
       player.scale.x = 1;
     } else {
       player.body.velocity.x = 0;
-      if (this.wasd.crouch.isDown) {
+      if (isDown) {
 
         if (!crouchFlag) {
           player.animations.play('crouch');
@@ -758,17 +733,17 @@ if (!tileBelow || tileBelow.index !== 3) {
 
     }
     // reset crouch state
-    if (this.wasd.crouch.isUp) {
+    if (!isDown) {
       crouchFlag = false;
     }
     // jump
-    if (this.wasd.jump.isDown && player.body.onFloor()) {
+    if (isJump && player.body.onFloor()) {
       player.body.velocity.y = -170;
       player.animations.play('jump');
       jumpingFlag = true;
     }
     //shooting
-    if (this.wasd.attack.isDown || this.wasd.attack2.isDown) {
+    if (isShoot) {
       shootingFlag = true;
       this.shoot();
     } else {
