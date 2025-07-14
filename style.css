@@ -319,6 +319,8 @@ background-color: rgba(46, 34, 71, 0.95);
 background-image: 
         linear-gradient(to right, #8010C4 1px, transparent 1px),
         linear-gradient(to bottom, #8010C4 1px, transparent 1px);
+background-size: 30px 30px;
+background-repeat: no-repeat;
 border: 2px solid #ffEC40;
 border-radius: 20px;
 padding: 10px;
@@ -381,6 +383,7 @@ background-color: rgba(128, 16, 196, 0.2);
     linear-gradient(to right, #8010C4 1px, transparent 1px),
     linear-gradient(to bottom, #8010C4 1px, transparent 1px);
     background-size: 60px 60px;
+    background-repeat: no-repeat;
     border: 3px solid #ffEC40;
     border-radius: 20px;
     box-shadow: 10px 10px 30px rgba(0,0,0,0.6);
@@ -685,14 +688,14 @@ position: fixed;
 bottom: 20px;
 left: 0;
 right: 0;
-display: none; /* Hidden by default */
+display: flex; /* Show by default for testing */
 justify-content: space-between;
 padding: 0 20px;
 z-index: 100;
-pointer-events: none; /* Allows clicks to pass through when hidden */
+pointer-events: auto; /* Enable clicks */
 }
 
-#mobile-controls {
+#mobile-controls.hidden {
   display: none;
 }
 
@@ -703,27 +706,32 @@ pointer-events: none; /* Allows clicks to pass through when hidden */
 .d-pad, .action-btns {
 display: grid;
 grid-template-columns: repeat(3, 1fr);
-grid-gap: 5px;
+grid-gap: 8px;
 pointer-events: auto;
 }
 
 .control-btn {
-width: 60px;
-height: 60px;
-border-radius: 50%;
-background: #333;
+width: 50px;
+height: 50px;
+border-radius: 12px;
+background: linear-gradient(145deg, #8b5cf6, #7c3aed);
 color: #fff;
-border: 4px solid #555;
-font-family: 'Courier New', monospace;
-font-size: 24px;
+border: 2px solid #a855f7;
+font-family: 'VT323', monospace;
+font-size: 18px;
 font-weight: bold;
-text-shadow: 2px 2px 0 #000;
-box-shadow: 0 4px 0 #222, inset 0 0 10px rgba(0,0,0,0.5);
+text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+box-shadow: 
+  0 4px 8px rgba(139, 92, 246, 0.3),
+  0 2px 4px rgba(0,0,0,0.2),
+  inset 0 1px 0 rgba(255,255,255,0.2);
 position: relative;
 padding: 0;
 outline: none;
 user-select: none;
 -webkit-tap-highlight-color: transparent;
+transition: all 0.15s ease;
+cursor: pointer;
 }
 
 /* D-Pad specific positioning */
@@ -734,9 +742,12 @@ user-select: none;
 
 /* Action buttons */
 .action-btns .control-btn {
-background: #a00;
-border-color: #c00;
-box-shadow: 0 4px 0 #800, inset 0 0 10px rgba(0,0,0,0.5);
+background: linear-gradient(145deg, #ec4899, #db2777);
+border-color: #f472b6;
+box-shadow: 
+  0 4px 8px rgba(236, 72, 153, 0.3),
+  0 2px 4px rgba(0,0,0,0.2),
+  inset 0 1px 0 rgba(255,255,255,0.2);
 }
 
 .jump { grid-column: 1; grid-row: 2; }
@@ -744,26 +755,98 @@ box-shadow: 0 4px 0 #800, inset 0 0 10px rgba(0,0,0,0.5);
 
 /* Pressed state */
 .control-btn:active {
-transform: translateY(2px);
-box-shadow: 0 2px 0 #222, inset 0 0 10px rgba(0,0,0,0.5);
+transform: translateY(2px) scale(0.95);
+box-shadow: 
+  0 2px 4px rgba(139, 92, 246, 0.4),
+  0 1px 2px rgba(0,0,0,0.3),
+  inset 0 1px 0 rgba(255,255,255,0.1);
 }
 
-/* Retro CRT glow effect */
+/* Hover state */
+.control-btn:hover {
+transform: translateY(-1px);
+box-shadow: 
+  0 6px 12px rgba(139, 92, 246, 0.4),
+  0 3px 6px rgba(0,0,0,0.2),
+  inset 0 1px 0 rgba(255,255,255,0.3);
+}
+
+/* Action buttons pressed state */
+.action-btns .control-btn:active {
+box-shadow: 
+  0 2px 4px rgba(236, 72, 153, 0.4),
+  0 1px 2px rgba(0,0,0,0.3),
+  inset 0 1px 0 rgba(255,255,255,0.1);
+}
+
+/* Action buttons hover state */
+.action-btns .control-btn:hover {
+box-shadow: 
+  0 6px 12px rgba(236, 72, 153, 0.4),
+  0 3px 6px rgba(0,0,0,0.2),
+  inset 0 1px 0 rgba(255,255,255,0.3);
+}
+
+/* Modern glow effect */
 .control-btn::after {
 content: '';
 position: absolute;
-top: 0;
-left: 0;
-right: 0;
-bottom: 0;
-border-radius: 50%;
-box-shadow: 0 0 8px rgba(255,255,255,0.3);
+top: -2px;
+left: -2px;
+right: -2px;
+bottom: -2px;
+border-radius: 14px;
+background: linear-gradient(45deg, rgba(139, 92, 246, 0.3), rgba(236, 72, 153, 0.3));
 opacity: 0;
-transition: opacity 0.3s;
+transition: opacity 0.3s ease;
+z-index: -1;
 }
 
 .control-btn:active::after {
 opacity: 1;
+}
+
+/* Focus state for accessibility */
+.control-btn:focus {
+outline: 2px solid #fbbf24;
+outline-offset: 2px;
+}
+
+/* Disable text selection on buttons */
+.control-btn {
+-webkit-user-select: none;
+-moz-user-select: none;
+-ms-user-select: none;
+user-select: none;
+}
+
+/* Ensure buttons work on all devices */
+.control-btn {
+touch-action: manipulation;
+}
+
+/* Ripple effect for button press */
+.control-btn {
+position: relative;
+overflow: hidden;
+}
+
+.control-btn::before {
+content: '';
+position: absolute;
+top: 50%;
+left: 50%;
+width: 0;
+height: 0;
+border-radius: 50%;
+background: rgba(255, 255, 255, 0.3);
+transform: translate(-50%, -50%);
+transition: width 0.3s, height 0.3s;
+}
+
+.control-btn:active::before {
+width: 100px;
+height: 100px;
 }
 
 .cyberpunk-list {
@@ -792,3 +875,56 @@ opacity: 1;
   border-left: 3px solid var(--neon-purple);
 }
 
+/* Responsive design for mobile controls */
+@media (max-width: 768px) {
+  #mobile-controls {
+    bottom: 15px;
+    padding: 0 15px;
+  }
+  
+  .control-btn {
+    width: 45px;
+    height: 45px;
+    font-size: 16px;
+  }
+  
+  .d-pad, .action-btns {
+    grid-gap: 6px;
+  }
+}
+
+@media (max-width: 480px) {
+  #mobile-controls {
+    bottom: 10px;
+    padding: 0 10px;
+  }
+  
+  .control-btn {
+    width: 40px;
+    height: 40px;
+    font-size: 14px;
+  }
+  
+  .d-pad, .action-btns {
+    grid-gap: 5px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .control-btn {
+    width: 55px;
+    height: 55px;
+    font-size: 20px;
+  }
+  
+  .d-pad, .action-btns {
+    grid-gap: 10px;
+  }
+}
+
+/* Hide mobile controls on screens wider than 768px */
+@media (min-width: 768px) {
+  #mobile-controls {
+    display: none;
+  }
+}
