@@ -53,7 +53,7 @@
                   <span style="--i:12">T</span><span style="--i:13">O</span><span style="--i:14">&nbsp;</span>
                   <span style="--i:15">E</span><span style="--i:16">X</span><span style="--i:17">P</span><span style="--i:18">L</span><span style="--i:19">O</span><span style="--i:20">R</span><span style="--i:21">E</span>
                 </span>
-              </div>       
+              </div>    
         </div>
         
          <!-- Instruction Screen -->
@@ -352,16 +352,16 @@
     <div id="mobile-controls">
       <!-- Movement D-Pad -->
       <div class="d-pad">
-        <button class="control-btn up" id="up">↑</button>
-        <button class="control-btn left" id="left">←</button>
-        <button class="control-btn down" id="down">↓</button>
-        <button class="control-btn right" id="right">→</button>
+        <button class="control-btn up" id="up" data-action="up">↑</button>
+        <button class="control-btn left" id="left" data-action="left">←</button>
+        <button class="control-btn down" id="down" data-action="down">↓</button>
+        <button class="control-btn right" id="right" data-action="right">→</button>
       </div>
       
       <!-- Action Buttons -->
       <div class="action-btns">
-        <button class="control-btn jump" id="jump">X</button>
-        <button class="control-btn shoot" id="shoot">C</button>
+        <button class="control-btn jump" id="jump" data-action="jump">X</button>
+        <button class="control-btn shoot" id="shoot" data-action="shoot">C</button>
       </div>
     </div>
 
@@ -479,7 +479,8 @@
         {
             document.getElementById('title-screen').style.display = 'none';
             document.getElementById('instructions-screen').style.display = 'flex'; 
-            document.getElementById('mobile-controls').style.display = 'none';
+            document.getElementById('mobile-controls').classList.add('hidden');
+            console.log('Game initialized - mobile controls hidden');
         }
         
         function startGameplay() 
@@ -491,7 +492,16 @@
 
             document.getElementById('game-over-screen').style.display = 'none';
 
-            document.getElementById('mobile-controls').style.display = 'flex';
+            // Show mobile controls for all devices (PC and mobile)
+            document.getElementById('mobile-controls').classList.remove('hidden');
+            console.log('Game started - mobile controls enabled');
+            
+            // Ensure mobile controls are properly initialized
+            if (window.mobileControls) {
+                console.log('Mobile controls object exists:', window.mobileControls);
+            } else {
+                console.error('Mobile controls object not found!');
+            }
 
             if (window.game) 
             {
@@ -509,6 +519,91 @@
             }
         };
 
+        // Test function to show buttons
+        function showButtons() {
+            document.getElementById('mobile-controls').classList.remove('hidden');
+            console.log('Test: Buttons shown for testing');
+            
+            // Test if buttons exist and are clickable
+            const buttons = ['left', 'right', 'up', 'down', 'jump', 'shoot'];
+            buttons.forEach(id => {
+                const btn = document.getElementById(id);
+                if (btn) {
+                    console.log(`Button ${id} exists and is clickable`);
+                    // Add a test click to see if it works
+                    btn.style.border = '2px solid #00ff00'; // Green border to show it's found
+                } else {
+                    console.error(`Button ${id} not found!`);
+                }
+            });
+            
+            // Test mobile controls state
+            if (window.mobileControls) {
+                console.log('Current mobile controls state:', window.mobileControls);
+            } else {
+                console.error('window.mobileControls not found!');
+            }
+        }
+        
+        // Debug function to check mobile controls
+        function debugMobileControls() {
+            if (window.mobileControls) {
+                console.log('Mobile controls debug:', window.mobileControls);
+                return window.mobileControls;
+            } else {
+                console.error('Mobile controls not available');
+                return null;
+            }
+        }
+        
+        // Function to simulate keyboard key presses
+        function simulateKeyPress(controlKey, isPressed) {
+            let keyCode;
+            let key;
+            
+            // Map control keys to keyboard keys
+            switch(controlKey) {
+                case 'left':
+                    keyCode = 37; // Left arrow
+                    key = 'ArrowLeft';
+                    break;
+                case 'right':
+                    keyCode = 39; // Right arrow
+                    key = 'ArrowRight';
+                    break;
+                case 'up':
+                    keyCode = 38; // Up arrow
+                    key = 'ArrowUp';
+                    break;
+                case 'down':
+                    keyCode = 40; // Down arrow
+                    key = 'ArrowDown';
+                    break;
+                case 'jump':
+                    keyCode = 88; // X key
+                    key = 'x';
+                    break;
+                case 'shoot':
+                    keyCode = 67; // C key
+                    key = 'c';
+                    break;
+                default:
+                    return;
+            }
+            
+            const eventType = isPressed ? 'keydown' : 'keyup';
+            const event = new KeyboardEvent(eventType, {
+                key: key,
+                keyCode: keyCode,
+                which: keyCode,
+                bubbles: true,
+                cancelable: true
+            });
+            
+            console.log(`Simulating ${eventType} for ${key} (${controlKey})`);
+            document.dispatchEvent(event);
+        }
+
         window.addEventListener("load", function () {
   // state variables for each button
   let mobileControls = {
@@ -520,14 +615,75 @@
     shoot: false
   };
 
-  // Utility to add touch listeners
+  // Utility to add touch listeners with console logs
   function setupButton(id, controlKey) {
     const btn = document.getElementById(id);
-    btn.addEventListener('touchstart', () => mobileControls[controlKey] = true);
-    btn.addEventListener('touchend', () => mobileControls[controlKey] = false);
-    btn.addEventListener('mousedown', () => mobileControls[controlKey] = true);
-    btn.addEventListener('mouseup', () => mobileControls[controlKey] = false);
-    btn.addEventListener('mouseleave', () => mobileControls[controlKey] = false);
+    if (!btn) {
+      console.error(`Button with id '${id}' not found!`);
+      return;
+    }
+    
+    const action = btn.getAttribute('data-action');
+    console.log(`Setting up button: ${id} (${action})`);
+    
+    // Touch events for mobile
+    btn.addEventListener('touchstart', (e) => {
+      e.preventDefault();
+      mobileControls[controlKey] = true;
+      window.mobileControls[controlKey] = true; // Update global controls
+      console.log(`Mobile ${action} button pressed`);
+      btn.style.transform = 'translateY(2px) scale(0.95)'; // Visual feedback
+      
+      // Simulate keyboard key press
+      simulateKeyPress(controlKey, true);
+    });
+    
+    btn.addEventListener('touchend', (e) => {
+      e.preventDefault();
+      mobileControls[controlKey] = false;
+      window.mobileControls[controlKey] = false; // Update global controls
+      console.log(`Mobile ${action} button released`);
+      btn.style.transform = ''; // Reset visual feedback
+      
+      // Simulate keyboard key release
+      simulateKeyPress(controlKey, false);
+    });
+    
+    // Mouse events for PC
+    btn.addEventListener('mousedown', (e) => {
+      e.preventDefault();
+      mobileControls[controlKey] = true;
+      window.mobileControls[controlKey] = true; // Update global controls
+      console.log(`PC ${action} button pressed`);
+      btn.style.transform = 'translateY(2px) scale(0.95)'; // Visual feedback
+      
+      // Simulate keyboard key press
+      simulateKeyPress(controlKey, true);
+    });
+    
+    btn.addEventListener('mouseup', (e) => {
+      e.preventDefault();
+      mobileControls[controlKey] = false;
+      window.mobileControls[controlKey] = false; // Update global controls
+      console.log(`PC ${action} button released`);
+      btn.style.transform = ''; // Reset visual feedback
+      
+      // Simulate keyboard key release
+      simulateKeyPress(controlKey, false);
+    });
+    
+    btn.addEventListener('mouseleave', (e) => {
+      e.preventDefault();
+      mobileControls[controlKey] = false;
+      window.mobileControls[controlKey] = false; // Update global controls
+      console.log(`PC ${action} button left`);
+      btn.style.transform = ''; // Reset visual feedback
+      
+      // Simulate keyboard key release
+      simulateKeyPress(controlKey, false);
+    });
+    
+    console.log(`Button ${id} setup complete`);
   }
 
   setupButton('left', 'left');
@@ -539,8 +695,29 @@
 
   // Expose globally for Phaser update loop
   window.mobileControls = mobileControls;
+  
+  // Also expose a function to update mobile controls from outside
+  window.updateMobileControl = function(control, value) {
+    if (window.mobileControls && window.mobileControls.hasOwnProperty(control)) {
+      window.mobileControls[control] = value;
+      console.log(`Mobile control ${control} set to ${value}`);
+    }
+  };
+  
+  console.log('Mobile controls initialized:', window.mobileControls);
 });
 
+window.addEventListener('DOMContentLoaded', function () {
+  const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+  const mobileControls = document.getElementById('mobile-controls');
+
+  if (!isTouchDevice) {
+    mobileControls.style.display = 'none'; // Hide on desktop
+    console.log('Hiding mobile controls (not a touch device)');
+  } else {
+    console.log('Touch device detected — showing mobile controls');
+  }
+});
     </script>
 </body>
 </html>
