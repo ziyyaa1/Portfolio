@@ -87,6 +87,38 @@ preload.prototype =
     game.load.audio('attack', ['assets/sounds/beam.ogg']);
     game.load.audio('kill', ['assets/sounds/explosion.ogg']);
     game.load.audio('hurt', ['assets/sounds/hurt.ogg']);
+
+    //about
+    for (let i = 0; i <= 126; i++) {
+  let frameName = 'about_' + ('000' + i).slice(-3); // e.g. about_004
+  game.load.image(frameName, 'assets/about/' + frameName + '.png');
+}
+for (let i = 0; i <= 4; i++) {
+  let frameName = 'projects_' + i;
+  game.load.image(frameName, 'assets/projects/' + frameName + '.png');
+}
+
+    //edu
+    for (let i = 0; i <= 4; i++) {
+  let frameName = 'education_' + i;
+  game.load.image(frameName, 'assets/education/' + frameName + '.png');
+}
+
+  for (let i = 0; i <= 6; i++) {
+  let frameName = 'contact_' + i;
+  game.load.image(frameName, 'assets/contact/' + frameName + '.png');
+}
+
+for (let i = 0; i <= 6; i++) {
+  let frameName = 'exp_' + i;
+  game.load.image(frameName, 'assets/exp/' + frameName + '.png');
+}
+
+for (let i = 0; i <= 5; i++) {
+  let frameName = 'skills_' + i;
+  game.load.image(frameName, 'assets/skills/' + frameName + '.png');
+}
+
   },
   create: function() 
   {
@@ -254,6 +286,159 @@ playGame.prototype =
   this.monitor_group.callAll("animations.add", "animations", "monitor-group", Phaser.Animation.generateFrameNames('monitor-face-', 1, 4, '', 0), 10, true);
   this.monitor_group.callAll("animations.play", "animations", "monitor-group");
   scaleAndOffset(this.monitor_group);
+
+  // === About section mini banner ===
+let bigBannerFirst = this.banner_big_group.getFirstAlive(); // ya getChildAt(0);
+if (bigBannerFirst) {
+  let aboutFrames = [];
+  for (let i = 0; i <= 126; i++) {
+    aboutFrames.push('about_' + ('000' + i).slice(-3));
+  }
+
+  let currentFrame = 0;
+
+  let miniBanner = game.add.image(bigBannerFirst.x + 40, bigBannerFirst.y + 90, aboutFrames[0]);
+  miniBanner.scale.setTo(0.4);
+  miniBanner.anchor.setTo(0.5);
+
+  game.time.events.loop(1000 / 45, function () {
+    currentFrame = (currentFrame + 1) % aboutFrames.length;
+    miniBanner.loadTexture(aboutFrames[currentFrame]);
+  }, this);
+}
+
+
+// === Add Projects Animation (5 frames) ===
+let secondBanner = this.banner_big_group.getChildAt(2); // 3rd big banner
+
+if (secondBanner) {
+  let projectFrames = [];
+for (let i = 0; i <= 4; i++) {
+  let frame = 'projects_' + i; 
+  projectFrames.push(frame);
+}
+
+
+  let projectBanner = game.add.image(
+    secondBanner.x - 120,
+    secondBanner.y + 70,
+    projectFrames[0]
+  );
+
+  projectBanner.scale.setTo(0.5);
+  projectBanner.anchor.setTo(0, 0);
+
+  let currentFrameP = 0;
+
+  game.time.events.loop(1000 / 45, function () { // 45 FPS for faster animation
+    currentFrameP = (currentFrameP + 1) % projectFrames.length;
+    projectBanner.loadTexture(projectFrames[currentFrameP]);
+  }, this);
+}
+
+// === Add Contact Animation (below last sushi banner) ===
+let lastSushi = this.banner_sushi_group.getTop(); // or getChildAt(this.banner_sushi_group.length - 1);
+
+if (lastSushi) {
+  let contactFrames = [];
+  for (let i = 0; i <= 6; i++) {
+    contactFrames.push('contact_' + i);
+  }
+
+  let currentContactFrame = 0;
+
+  let contactBanner = game.add.image(
+    lastSushi.x + 220,
+    lastSushi.y + lastSushi.height -155, // ↓ below the sushi banner
+    contactFrames[0]
+  );
+
+  contactBanner.scale.setTo(0.9); // adjust as needed
+  contactBanner.anchor.setTo(0, 0); // top-left anchor
+
+  game.time.events.loop(1000 / 30, function () {
+    currentContactFrame = (currentContactFrame + 1) % contactFrames.length;
+    contactBanner.loadTexture(contactFrames[currentContactFrame]);
+  }, this);
+}
+// === Add Education Animation (left of first big banner) ===
+let firstBigBanner = this.banner_big_group.getChildAt(0); // 0 = first big banner
+
+if (firstBigBanner) {
+  let educationFrames = [];
+  for (let i = 0; i <= 4; i++) {
+    educationFrames.push('education_' + i);
+  }
+
+  let currentEduFrame = 0;
+
+  let eduBanner = game.add.image(
+    firstBigBanner.x + 590,  // First big banner ke left side
+    firstBigBanner.y - 40,
+    educationFrames[0]
+  );
+
+  eduBanner.anchor.setTo(0, 0); // Top-left
+  eduBanner.scale.setTo(0.28);   // Adjust karo agar size zyada ho
+
+  game.time.events.loop(1000 / 15, function () {
+    currentEduFrame = (currentEduFrame + 1) % educationFrames.length;
+    eduBanner.loadTexture(educationFrames[currentEduFrame]);
+  }, this);
+}
+
+// === Add Experience Animation (right of last Coke banner) ===
+let lastCokeBannerIndex = this.banner_coke_group.length - 1;
+let lastCokeBanner = this.banner_coke_group.getChildAt(lastCokeBannerIndex);
+
+if (lastCokeBanner) {
+  let experienceFrames = [];
+  for (let i = 0; i <= 6; i++) {
+    experienceFrames.push('exp_' + i); // exp_01 to exp_07
+  }
+
+  let currentExpFrame = 0;
+
+  let expBanner = game.add.image(
+    lastCokeBanner.x - 25,  // Adjust X to right of Coke banner
+    lastCokeBanner.y - 157,
+    experienceFrames[0]
+  );
+
+  expBanner.anchor.setTo(0, 0);
+  expBanner.scale.setTo(0.5); // Adjust size if needed
+
+  game.time.events.loop(1000 / 30, function () {
+    currentExpFrame = (currentExpFrame + 1) % experienceFrames.length;
+    expBanner.loadTexture(experienceFrames[currentExpFrame]);
+  }, this);
+}
+
+if (lastCokeBanner) {
+  let skillsFrames = [];
+  for (let i = 0; i <= 5; i++) {
+    skillsFrames.push('skills_' + i); 
+  }
+
+  let currentSkillsFrame = 0;
+
+  let skillsBanner = game.add.image(
+    lastCokeBanner.x - 450,  // Adjust X to right of Coke banner
+    lastCokeBanner.y - 470,
+    skillsFrames[0]
+  );
+
+  skillsBanner.anchor.setTo(0, 0);
+  skillsBanner.scale.setTo(0.5); // Adjust size if needed
+
+  game.time.events.loop(1000 / 30, function () {
+    currentSkillsFrame = (currentSkillsFrame + 1) % skillsFrames.length;
+    skillsBanner.loadTexture(skillsFrames[currentSkillsFrame]);
+  }, this);
+}
+
+
+
 },
 
 
